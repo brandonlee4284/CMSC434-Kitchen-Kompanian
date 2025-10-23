@@ -1,1 +1,0 @@
-# CMSC434-Kitchen-Kompanian

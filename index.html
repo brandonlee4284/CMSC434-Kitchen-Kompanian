@@ -36,10 +36,38 @@
       <!-- TAB 1 -->
       <section id="Inventory" class="tab active">
         <h1>Welcome back to Kitchy</h1>
-        <div class="scroll-box">
-          <h2>Current Fridge Items</h2>
-          <input type="text" id="searchFridge" placeholder="Search foods..." />
-          <ul id="foodItems"></ul>
+        <div class="container">
+          <!-- Fridge List -->
+          <div class="list" id="fridge-list">
+            <h2>Current Fridge Items</h2>
+            <input type="text" id="searchFridge" placeholder="Search foods..." />
+            <div class="table-container">
+              <table id="foodTable">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Expires</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="list" id="expiring-list">
+            <h2>Expiring Soon</h2>
+            <div class="table-container">
+              <table id="expiringTable">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Expires</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -64,21 +92,7 @@
     </main>
   </div>
 
-  <script>
-    // Tab switching
-    const buttons = document.querySelectorAll("nav button");
-    const tabs = document.querySelectorAll("section.tab");
-    buttons.forEach(btn => btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
-      tabs.forEach(t => t.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById(btn.dataset.tab).classList.add("active");
-    }));
-
-    // Profile notification example
-    const img = document.getElementById("profileImg");
-    if (img) img.addEventListener("click", () => alert("GOAT"));
-  </script>
+  <script src="main.js"></script>
 </body>
 
 </html>
