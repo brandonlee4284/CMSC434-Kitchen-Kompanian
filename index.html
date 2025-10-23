@@ -1,80 +1,310 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kitchen Kompanian</title>
-  <link rel="stylesheet" href="index.css" />
+  <title>CMSC434 Six Tabs</title>
+  <style>
+    :root {
+      --w: 640px;
+      --h: 960px;
+    }
+
+    body {
+      display: grid;
+      place-content: center;
+      background: #0a0f1d;
+      font-family: system-ui, Segoe UI, Roboto, Arial;
+      color: #e5e7eb;
+      margin: 0;
+    }
+
+    .device {
+      width: var(--w);
+      height: var(--h);
+      display: grid;
+      grid-template-rows: 1fr 64px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+      background: #111827;
+    }
+
+    nav {
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      background: #1e293b;
+      border-top: 1px solid #334155;
+    }
+
+    nav button {
+      background: none;
+      border: 0;
+      color: #94a3b8;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    nav button.active {
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    nav button img {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    nav button span {
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    main {
+      position: relative;
+      overflow: hidden;
+      grid-row: 1;
+    }
+
+    section.tab {
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      padding: 16px;
+      display: none;
+    }
+
+    section.tab.active {
+      display: block;
+    }
+
+    .scroll-box {
+      overflow: auto;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
+
 <body>
-  <header class="site-header">
-    <h1>Kitchen Kompanian</h1>
-    <p class="subtitle">Smart, friendly refrigerator app</p>
-  </header>
+<div class="device">
+  <nav>
+    <button data-tab="text" class="active">
+      <img src="" alt="">
+      <span>Text</span>
+    </button>
 
-  <main class="container">
-    <section class="card">
-      <h2>Welcome home 👋</h2>
-      <p>This is a boilerplate home screen. Add your latest recipes, tips, or featured items here.</p>
-    </section>
+    <button data-tab="lr">
+      <img src="" alt="">
+      <span>LR</span>
+    </button>
 
-    <section class="grid">
-      <article class="card">
-        <h3>Search (boilerplate)</h3>
-        <p>Explore ingredients and recipes. This is placeholder content for the Search tab.</p>
-      </article>
-      <article class="card">
-        <h3>Fridge (boilerplate)</h3>
-        <p>Track what you have on hand. This is placeholder content for the Fridge tab.</p>
-      </article>
-    </section>
-  </main>
+    <button data-tab="colors">
+      <img src="" alt="">
+      <span>Colors</span>
+    </button>
 
-  <nav class="tabbar" role="navigation" aria-label="Primary">
-    <a href="index.html" aria-current="page" class="tab" aria-label="Home">
-      <!-- Home icon -->
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 11.5L12 4l8 7.5" />
-        <path d="M6.5 10.5V20h11V10.5" />
-      </svg>
-      <span class="sr-only">Home</span>
-    </a>
+    <button data-tab="profile">
+      <img src="" alt="">
+      <span>Profile</span>
+    </button>
 
-    <a href="#" class="tab" aria-disabled="true" aria-label="Search">
-      <!-- Search icon -->
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="11" cy="11" r="6.5" />
-        <path d="M20 20l-3.8-3.8" />
-      </svg>
-      <span class="sr-only">Search</span>
-    </a>
+    <button data-tab="choices">
+      <img src="" alt="">
+      <span>Choices</span>
+    </button>
 
-    <a href="#" class="tab" aria-disabled="true" aria-label="Fridge">
-      <!-- Fridge icon -->
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="6" y="3" width="12" height="18" rx="2" ry="2"/>
-        <path d="M6 10.5h12" />
-        <path d="M15.5 7.5h1.5" />
-        <path d="M15.5 14.8h1.5" />
-      </svg>
-      <span class="sr-only">Fridge</span>
-    </a>
-
-    <a href="profile.html" class="tab" aria-label="Profile">
-      <!-- Profile icon -->
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="8.5" r="3.5" />
-        <path d="M4.5 19.5a7.5 7.5 0 0 1 15 0" />
-      </svg>
-      <span class="sr-only">Profile</span>
-    </a>
+    <button data-tab="todo">
+      <img src="" alt="">
+      <span>ToDo</span>
+    </button>
   </nav>
 
-  <script>
-    // Prevent navigation for disabled tabs
-    document.querySelectorAll('a[aria-disabled="true"]').forEach(el => {
-      el.addEventListener('click', e => e.preventDefault());
-    });
-  </script>
+  <main>
+    <!-- TAB 1 -->
+    <section id="text" class="tab active">
+      <h2>Scrollable Text</h2>
+      <div class="scroll-box">
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+        <p>blah blah blah blah blah blah blah blah blah blah blah </p>
+
+        <p>more blah </p>
+        <p>meep meep meep meep</p>
+      </div>
+    </section>
+
+    <!-- TAB 2 -->
+    <section id="lr" class="tab">
+      <div style="position:relative;height:100%;">
+        <p style="position:absolute;right:16px;bottom:16px;">Down Here</p>
+      </div>
+    </section>
+
+    <!-- TAB 3 -->
+    <section id="colors" class="tab">
+      <p style="color:yellow;background:black;">Yellow on black</p>
+      <p style="color:purple;background:yellow;">Purple on yellow</p>
+    </section>
+
+    <!-- TAB 4 -->
+    <section id="profile" class="tab" style="text-align:center;">
+      <img src="" alt="Profile picture" style="width:160px;border-radius:50%;cursor:pointer;"
+           id="profileImg">
+      <h3><b>LeBron James</b></h3>
+    </section>
+
+    <!-- TAB 5 -->
+    <section id="choices" class="tab">
+      <h2 style="margin:0 0 12px;">Choices</h2>
+
+      <form id="choicesForm" style="display:grid;gap:12px;max-width:480px;">
+        <!-- Radio buttons -->
+        <fieldset style="border:1px solid #334155;border-radius:12px;padding:12px;">
+          <legend style="padding:0 6px;color:#94a3b8;">1) Pick a size</legend>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="size" value="Small"> Small
+            </label>
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="size" value="Medium"> Medium
+            </label>
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="size" value="Large"> Large
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Drop-down -->
+        <label for="colorSelect" style="display:grid;gap:6px;">
+          <span style="color:#94a3b8;">2) Pick a color</span>
+          <select id="colorSelect" name="color"
+                  style="background:#0b1220;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;">
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Purple">Purple</option>
+          </select>
+        </label>
+
+        <!-- Button that reflects choices -->
+        <div style="display:flex;gap:8px;">
+          <button type="button" id="showChoice"
+                  style="background:#2563eb;border:0;color:#fff;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;">
+            3) Show Choice
+          </button>
+          <button type="reset"
+                  style="background:#334155;border:0;color:#e5e7eb;padding:10px 14px;border-radius:10px;cursor:pointer;"
+                  onclick="document.getElementById('choiceResult').textContent=''">
+            Reset
+          </button>
+        </div>
+      </form>
+
+      <p id="choiceResult" aria-live="polite" style="margin-top:8px;font-weight:600;"></p>
+    </section>
+
+    <!-- TAB 6 -->
+    <section id="todo" class="tab">
+      <h2 style="margin:0 0 12px;">ToDo</h2>
+
+      <div style="display:flex;gap:8px;max-width:520px;">
+        <input id="newItem" placeholder="Add a new task..."
+               style="flex:1;background:#0b1220;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;" />
+        <button id="addItem"
+                style="background:#22c55e;border:0;color:#0a0f1d;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;">
+          Add
+        </button>
+      </div>
+
+      <ul id="todoList" style="list-style:none;padding:0;margin:14px 0 6px;display:grid;gap:8px;"></ul>
+      <p style="color:#94a3b8;font-size:12px;margin:0;">
+        Tip: click a task to cross it off; use the × button to delete it.
+      </p>
+    </section>
+  </main>
+</div>
+
+<script>
+  // Tab switching
+  const buttons = document.querySelectorAll("nav button");
+  const tabs = document.querySelectorAll("section.tab");
+  buttons.forEach(btn => btn.addEventListener("click", () => {
+    buttons.forEach(b => b.classList.remove("active"));
+    tabs.forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  }));
+
+  // Profile notification example
+  const img = document.getElementById("profileImg");
+  if (img) img.addEventListener("click", () => alert("GOAT"));
+
+  // Choices logic
+  const show = document.getElementById("showChoice");
+  if (show) show.onclick = () => {
+    const size = document.querySelector("input[name=size]:checked")?.value;
+    const color = document.querySelector("select[name=color]").value;
+    document.getElementById("choiceResult").textContent =
+            `You chose ${size || "?"} and ${color}`;
+  };
+
+  // To-Do logic
+  const add = document.getElementById("addItem");
+  const list = document.getElementById("todoList");
+  if (add) add.onclick = () => {
+    const text = document.getElementById("newItem").value.trim();
+    if (!text) return;
+    const li = document.createElement("li");
+    li.textContent = text;
+    li.onclick = () => li.style.textDecoration =
+            li.style.textDecoration === "line-through" ? "" : "line-through";
+    const del = document.createElement("button");
+    del.textContent = "×";
+    del.onclick = e => { e.stopPropagation(); li.remove(); };
+    li.append(" ", del);
+    list.append(li);
+    document.getElementById("newItem").value = "";
+  };
+</script>
 </body>
+
 </html>
