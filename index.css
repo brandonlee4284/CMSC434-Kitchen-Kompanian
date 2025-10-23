@@ -82,3 +82,7 @@
       overflow: auto;
       border: 1px solid #ccc;
     }
+
+    nav button[data-tab="profile"] img {
+      filter: brightness(0) invert(1);
+    }
