@@ -1,0 +1,187 @@
+/* profile.css
+   Shares the same accessible, refined color system as index.css.
+*/
+:root {
+  --bg: #F5F9FF;
+  --surface: #FFFFFF;
+  --primary: #1c4587;
+  --primary-strong: #0f3170;
+  --text: #0D1418;
+  --text-muted: #475569;
+  --ring: #8AB8FF;
+  --shadow: 0 6px 24px rgba(15, 49, 112, 0.08);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { margin: 0 0 .5rem; color: var(--text); }
+
+p { margin: 0; color: var(--text-muted); }
+
+.site-header {
+  padding: 1.25rem 1rem 0.25rem;
+  text-align: center;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1rem 1rem 7.5rem;
+}
+
+.profile-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(28,69,135,0.08);
+}
+
+.avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: .25rem auto 1rem;
+  background: radial-gradient(120px 120px at 30% 20%, rgba(138,184,255,.35), transparent 60%),
+              linear-gradient(180deg, rgba(255,255,255,1), rgba(240,246,255,1));
+  border: 1px solid rgba(15,49,112,.12);
+}
+
+.avatar svg {
+  width: 52px; height: 52px;
+  fill: none;
+  stroke: var(--primary-strong);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.form {
+  display: grid;
+  gap: .9rem;
+  margin-top: .5rem;
+}
+
+.field { display: grid; gap: .35rem; }
+
+label { font-weight: 600; color: var(--text); }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  width: 100%;
+  padding: .75rem .9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(15,49,112,0.16);
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+
+input::placeholder { color: #94a3b8; }
+
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(138,184,255,.35);
+}
+
+.actions {
+  margin-top: .2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  appearance: none;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  padding: .7rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(28,69,135,0.18);
+}
+
+button:hover { background: var(--primary-strong); }
+button:active { transform: translateY(1px); }
+
+/* Bottom tab bar (global component) */
+.tabbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  padding: .5rem max(1rem, env(safe-area-inset-left)) calc(.5rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-right));
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(15,49,112,0.12);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .25rem;
+  z-index: 10;
+}
+
+.tab {
+  --size: 48px;
+  height: var(--size);
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.tab[aria-current="page"] {
+  color: var(--primary-strong);
+  background: rgba(138, 184, 255, 0.18);
+}
+
+.tab:hover { background: rgba(15,49,112,0.06); }
+.tab:active { background: rgba(15,49,112,0.10); }
+
+.tab[aria-disabled="true"] { opacity: .55; pointer-events: auto; cursor: not-allowed; }
+
+.tab svg {
+  width: 26px; height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Accessibility helpers */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}

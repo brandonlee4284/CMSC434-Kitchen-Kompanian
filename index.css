@@ -1,0 +1,146 @@
+/* index.css
+  Color scheme adjusted from the proposed palette to improve readability.
+  - Original background #89CFF0 is too saturated for large areas.
+  - We use a very light, desaturated blue-tinted background and dark text for contrast.
+*/
+
+:root {
+  --bg: #F5F9FF;          /* light, readable background replacing #89CFF0 */
+  --surface: #FFFFFF;     /* cards / surfaces */
+  --primary: #1c4587;     /* pulled from provided palette for brand accents */
+  --primary-strong: #0f3170; /* darker tone for focus/active states */
+  --text: #0D1418;        /* heading / body text (from guide) */
+  --text-muted: #475569;  /* refined version of #365260 for readability */
+  --ring: #8AB8FF;        /* subtle focus ring */
+  --shadow: 0 6px 24px rgba(15, 49, 112, 0.08);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  margin: 0 0 .5rem;
+  color: var(--text);
+}
+
+p { color: var(--text-muted); margin: 0; }
+
+.site-header {
+  padding: 1.25rem 1rem 0.25rem;
+  text-align: center;
+}
+
+.site-header h1 {
+  font-size: 1.5rem;
+  letter-spacing: .4px;
+}
+
+.subtitle {
+  font-size: .95rem;
+  margin-top: .25rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 1rem 7.5rem; /* make room for bottom nav */
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(28,69,135,0.08);
+  margin-bottom: 1rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Bottom tab bar (global component) */
+.tabbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  padding: .5rem max(1rem, env(safe-area-inset-left)) calc(.5rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-right));
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(15,49,112,0.12);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .25rem;
+  z-index: 10;
+}
+
+.tab {
+  --size: 48px;
+  height: var(--size);
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.tab[aria-current="page"] {
+  color: var(--primary-strong);
+  background: rgba(138, 184, 255, 0.18);
+}
+
+.tab:hover { background: rgba(15,49,112,0.06); }
+.tab:active { background: rgba(15,49,112,0.10); }
+
+.tab[aria-disabled="true"] { opacity: .55; pointer-events: auto; cursor: not-allowed; }
+
+.tab svg {
+  width: 26px; height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Accessibility helpers */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visibility */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}
