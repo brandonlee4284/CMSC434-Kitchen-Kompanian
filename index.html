@@ -34,7 +34,7 @@
     nav {
       grid-row: 2;
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       background: #1e293b;
       border-top: 1px solid #334155;
     }
@@ -115,16 +115,6 @@
       <img src="" alt="">
       <span>Profile</span>
     </button>
-
-    <button data-tab="choices">
-      <img src="" alt="">
-      <span>Choices</span>
-    </button>
-
-    <button data-tab="todo">
-      <img src="" alt="">
-      <span>ToDo</span>
-    </button>
   </nav>
 
   <main>
@@ -191,75 +181,6 @@
            id="profileImg">
       <h3><b>LeBron James</b></h3>
     </section>
-
-    <!-- TAB 5 -->
-    <section id="choices" class="tab">
-      <h2 style="margin:0 0 12px;">Choices</h2>
-
-      <form id="choicesForm" style="display:grid;gap:12px;max-width:480px;">
-        <!-- Radio buttons -->
-        <fieldset style="border:1px solid #334155;border-radius:12px;padding:12px;">
-          <legend style="padding:0 6px;color:#94a3b8;">1) Pick a size</legend>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="radio" name="size" value="Small"> Small
-            </label>
-            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="radio" name="size" value="Medium"> Medium
-            </label>
-            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
-              <input type="radio" name="size" value="Large"> Large
-            </label>
-          </div>
-        </fieldset>
-
-        <!-- Drop-down -->
-        <label for="colorSelect" style="display:grid;gap:6px;">
-          <span style="color:#94a3b8;">2) Pick a color</span>
-          <select id="colorSelect" name="color"
-                  style="background:#0b1220;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;">
-            <option value="Red">Red</option>
-            <option value="Blue">Blue</option>
-            <option value="Green">Green</option>
-            <option value="Purple">Purple</option>
-          </select>
-        </label>
-
-        <!-- Button that reflects choices -->
-        <div style="display:flex;gap:8px;">
-          <button type="button" id="showChoice"
-                  style="background:#2563eb;border:0;color:#fff;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;">
-            3) Show Choice
-          </button>
-          <button type="reset"
-                  style="background:#334155;border:0;color:#e5e7eb;padding:10px 14px;border-radius:10px;cursor:pointer;"
-                  onclick="document.getElementById('choiceResult').textContent=''">
-            Reset
-          </button>
-        </div>
-      </form>
-
-      <p id="choiceResult" aria-live="polite" style="margin-top:8px;font-weight:600;"></p>
-    </section>
-
-    <!-- TAB 6 -->
-    <section id="todo" class="tab">
-      <h2 style="margin:0 0 12px;">ToDo</h2>
-
-      <div style="display:flex;gap:8px;max-width:520px;">
-        <input id="newItem" placeholder="Add a new task..."
-               style="flex:1;background:#0b1220;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;" />
-        <button id="addItem"
-                style="background:#22c55e;border:0;color:#0a0f1d;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;">
-          Add
-        </button>
-      </div>
-
-      <ul id="todoList" style="list-style:none;padding:0;margin:14px 0 6px;display:grid;gap:8px;"></ul>
-      <p style="color:#94a3b8;font-size:12px;margin:0;">
-        Tip: click a task to cross it off; use the × button to delete it.
-      </p>
-    </section>
   </main>
 </div>
 
@@ -277,33 +198,6 @@
   // Profile notification example
   const img = document.getElementById("profileImg");
   if (img) img.addEventListener("click", () => alert("GOAT"));
-
-  // Choices logic
-  const show = document.getElementById("showChoice");
-  if (show) show.onclick = () => {
-    const size = document.querySelector("input[name=size]:checked")?.value;
-    const color = document.querySelector("select[name=color]").value;
-    document.getElementById("choiceResult").textContent =
-            `You chose ${size || "?"} and ${color}`;
-  };
-
-  // To-Do logic
-  const add = document.getElementById("addItem");
-  const list = document.getElementById("todoList");
-  if (add) add.onclick = () => {
-    const text = document.getElementById("newItem").value.trim();
-    if (!text) return;
-    const li = document.createElement("li");
-    li.textContent = text;
-    li.onclick = () => li.style.textDecoration =
-            li.style.textDecoration === "line-through" ? "" : "line-through";
-    const del = document.createElement("button");
-    del.textContent = "×";
-    del.onclick = e => { e.stopPropagation(); li.remove(); };
-    li.append(" ", del);
-    list.append(li);
-    document.getElementById("newItem").value = "";
-  };
 </script>
 </body>
 
