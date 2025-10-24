@@ -26,11 +26,11 @@
         <span>Recipes</span>
       </button>
 
-    <button data-tab="profile">
-      <img src="icons/pfp.png" alt="">
-      <span>Profile</span>
-    </button>
-  </nav>
+      <button data-tab="profile">
+        <img src="icons/pfp.png" alt="">
+        <span>Profile</span>
+      </button>
+    </nav>
 
     <main>
       <!-- TAB 1 -->
@@ -45,7 +45,7 @@
               <table id="foodTable">
                 <thead>
                   <tr>
-                    <th >Item</th>
+                    <th>Item</th>
                     <th>Expires</th>
                   </tr>
                 </thead>
@@ -71,57 +71,81 @@
         </div>
       </section>
 
+
       <!-- TAB 2 -->
       <section id="shopping" class="tab">
-        <div style="position:relative;height:100%;">
-          <p style="position:absolute;right:16px;bottom:16px;">Down Here</p>
+        <div style="display:flex;gap:8px;max-width:520px;">
+          <input id="newItem" placeholder="Add a new item..."
+            style="flex:1;background: white ;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;" />
+          <button id="addItem"
+            style="background:#22c55e;border:0;color:#0a0f1d;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;">
+            Add
+          </button>
         </div>
+
+        <ul id="shoppingList" style="list-style:none;padding:0;margin:14px 0 6px;display:grid;gap:8px;"></ul>
+        <p style="color:#94a3b8;font-size:12px;margin:0;">
+          Tip: click a task to cross it off; use the × button to delete it.
+        </p>
       </section>
 
       <!-- TAB 3 -->
       <section id="recipes" class="tab">
-        <p style="color:yellow;background:black;">Yellow on black</p>
-        <p style="color:purple;background:yellow;">Purple on yellow</p>
+        <h2 class="recipes-header">Recipes</h2>
+        <div class="recipes-grid">
+          <div><input type="button" id="seafood" value="Seafood" /></div>
+          <div><input type="button" id="soups" value="Soups" /></div>
+          <div><input type="button" id="salads" value="Salads" /></div>
+          <div><input type="button" id="meat" value="Meats" /></div>
+          <div><input type="button" id="sauces" value="Sauces" /></div>
+          <div><input type="button" id="desserts" value="Desserts" /></div>
+          <div><input type="button" id="eggs" value="Eggs" /></div>
+          <div><input type="button" id="beverages" value="Beverages" /></div>
+          <div><input type="button" id="bread" value="Bread" /></div>
+          <div><input type="button" id="pasta" value="Pasta" /></div>
+          <div><input type="button" id="dairy" value="Dairy" /></div>
+          <div><input type="button" id="pizza" value="Pizza" /></div>
+        </div>
       </section>
 
-    <!-- TAB 4 -->
-    <section id="profile" class="tab" style="text-align:center; margin-top: 70px;">
-      <img src="icons/pfp.png" alt="Profile picture" style="width:160px;border-radius:50%;cursor:pointer;"
-                    id="profileImg">
-      <h2 style="font-size:28px;font-weight:800;margin:0;">User 1</h2>
 
-      <div style="margin-top:28px;display:grid;gap:18px;text-align:left;">
-        <div>
-          <label style="font-weight:800;font-size:18px;">Email:</label>
-          <input type="text" placeholder="bob@gmail.com"
-                style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
-        </div>
-        <div>
-          <label style="font-weight:800;font-size:18px;">Favorite Recipes:</label>
-          <input type="text" placeholder="PB&J, Toast with Butter, Ultimate Butter, Fruit Salad"
-                style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
-        </div>
+      <!-- TAB 4 -->
+      <section id="profile" class="tab" style="text-align:center; margin-top: 70px;">
+        <img src="icons/pfp.png" alt="Profile picture" style="width:160px;border-radius:50%;cursor:pointer;"
+          id="profileImg">
+        <h2 style="font-size:28px;font-weight:800;margin:0;">User 1</h2>
 
-        <div>
-          <label style="font-weight:800;font-size:18px;">Dislikes:</label>
-          <input type="text" placeholder="Everything"
-                style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
-        </div>
+        <div style="margin-top:28px;display:grid;gap:18px;text-align:left;">
+          <div>
+            <label style="font-weight:800;font-size:18px;">Email:</label>
+            <input type="text" placeholder="bob@gmail.com"
+              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          </div>
+          <div>
+            <label style="font-weight:800;font-size:18px;">Favorite Recipes:</label>
+            <input type="text" placeholder="PB&J, Toast with Butter, Ultimate Butter, Fruit Salad"
+              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          </div>
 
-        <div>
-          <label style="font-weight:800;font-size:18px;">Dietary Restrictions:</label>
-          <input type="text" placeholder="None"
-                style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
-        </div>
+          <div>
+            <label style="font-weight:800;font-size:18px;">Dislikes:</label>
+            <input type="text" placeholder="Everything"
+              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          </div>
 
-        <div>
-          <label style="font-weight:800;font-size:18px;">Allergies:</label>
-          <input type="text" placeholder="None"
-                style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          <div>
+            <label style="font-weight:800;font-size:18px;">Dietary Restrictions:</label>
+            <input type="text" placeholder="None"
+              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          </div>
+
+          <div>
+            <label style="font-weight:800;font-size:18px;">Allergies:</label>
+            <input type="text" placeholder="None"
+              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          </div>
         </div>
-      </div>
-        <button type="button"
-            style="
+        <button type="button" style="
               margin-top:10px;
               background:#254e70;
               color:white;
@@ -130,11 +154,11 @@
               border-radius:12px;
               font-weight:700;
               cursor:pointer;">
-        Save
-      </button>
-    </section>
-  </main>
-</div>
+          Save
+        </button>
+      </section>
+    </main>
+  </div>
 
   <script src="main.js"></script>
 </body>
