@@ -16,10 +16,10 @@
         <span>Inventory</span>
       </button>
 
-      <button data-tab="shopping">
-        <img src="" alt="">
-        <span>Shopping</span>
-      </button>
+    <button data-tab="shopping">
+      <img src="icons/shopping.png" alt="Shopping Icon">
+      <span>Shopping</span>
+    </button>
 
       <button data-tab="recipes">
         <img src="" alt="">
@@ -43,12 +43,22 @@
         </div>
       </section>
 
-      <!-- TAB 2 -->
-      <section id="shopping" class="tab">
-        <div style="position:relative;height:100%;">
-          <p style="position:absolute;right:16px;bottom:16px;">Down Here</p>
-        </div>
-      </section>
+    <!-- TAB 2 -->
+    <section id="shopping" class="tab">
+      <div style="display:flex;gap:8px;max-width:520px;">
+        <input id="newItem" placeholder="Add a new item..."
+               style="flex:1;background:#0b1220;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;" />
+        <button id="addItem"
+                style="background:#22c55e;border:0;color:#0a0f1d;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;">
+          Add
+        </button>
+      </div>
+
+      <ul id="shoppingList" style="list-style:none;padding:0;margin:14px 0 6px;display:grid;gap:8px;"></ul>
+      <p style="color:#94a3b8;font-size:12px;margin:0;">
+        Tip: click a task to cross it off; use the × button to delete it.
+      </p>
+    </section>
 
       <!-- TAB 3 -->
       <section id="recipes" class="tab">
@@ -119,10 +129,27 @@
       document.getElementById(btn.dataset.tab).classList.add("active");
     }));
 
-    // Profile notification example
-    const img = document.getElementById("profileImg");
-    if (img) img.addEventListener("click", () => alert("GOAT"));
-  </script>
+  // Profile notification example
+  const img = document.getElementById("profileImg");
+  if (img) img.addEventListener("click", () => alert("GOAT"));
+
+  const add = document.getElementById("addItem");
+  const list = document.getElementById("shoppingList");
+  if (add) add.onclick = () => {
+    const text = document.getElementById("newItem").value.trim();
+    if (!text) return;
+    const li = document.createElement("li");
+    li.textContent = text;
+    li.onclick = () => li.style.textDecoration =
+            li.style.textDecoration === "line-through" ? "" : "line-through";
+    const del = document.createElement("button");
+    del.textContent = "×";
+    del.onclick = e => { e.stopPropagation(); li.remove(); };
+    li.append(" ", del);
+    list.append(li);
+    document.getElementById("newItem").value = "";
+  };
+</script>
 </body>
 
 </html>
