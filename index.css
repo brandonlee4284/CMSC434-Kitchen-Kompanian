@@ -1,88 +1,143 @@
 :root {
-      --w: 640px;
-      --h: 960px;
-    }
+  --w: 640px;
+  --h: 960px;
+}
 
-    body {
-      display: grid;
-      place-content: center;
-      background: #0a0f1d;
-      font-family: system-ui, Segoe UI, Roboto, Arial;
-      color: #000000;
-      margin: 0;
-    }
+body {
+  display: grid;
+  place-content: center;
+  background: #0a0f1d;
+  font-family: system-ui, Segoe UI, Roboto, Arial;
+  color: #000000;
+  margin: 0;
+}
 
-    .device {
-      width: var(--w);
-      height: var(--h);
-      display: grid;
-      grid-template-rows: 1fr 64px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
-      background: #ceeaf7;
-    }
+.device {
+  width: var(--w);
+  height: var(--h);
+  display: grid;
+  grid-template-rows: 1fr 64px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  background: #ceeaf7;
+}
 
-    nav {
-      grid-row: 2;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: #1e293b;
-      border-top: 1px solid #334155;
-    }
+nav {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #1e293b;
+  border-top: 1px solid #334155;
+}
 
-    nav button {
-      background: #254e70;
-      border: 0;
-      color: #94a3b8;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 6px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
+nav button {
+  background: #254e70;
+  border: 0;
+  color: #94a3b8;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
 
-    nav button.active {
-      background: #334155;
-      color: #f8fafc;
-    }
+nav button.active {
+  background: #334155;
+  color: #f8fafc;
+}
 
-    nav button img {
-      width: 20px;
-      height: 20px;
-      display: block;
-    }
+nav button img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
 
-    nav button span {
-      font-size: 12px;
-      line-height: 1;
-    }
+nav button span {
+  font-size: 12px;
+  line-height: 1;
+}
 
-    main {
-      position: relative;
-      overflow: hidden;
-      grid-row: 1;
-    }
+main {
+  position: relative;
+  overflow: hidden;
+  grid-row: 1;
+}
 
-    section.tab {
-      position: absolute;
-      inset: 0;
-      overflow: auto;
-      padding: 16px;
-      display: none;
-    }
+section.tab {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  padding: 16px;
+  display: none;
+}
 
-    section.tab.active {
-      display: block;
-    }
+section.tab.active {
+  display: block;
+}
 
-    .scroll-box {
-      overflow: auto;
-      border: 1px solid #ccc;
-    }
+.scroll-box {
+  overflow: auto;
+  border: 1px solid #ccc;
+}
 
-    nav button[data-tab="profile"] img {
-      filter: brightness(0) invert(1);
-    }
+nav button[data-tab="profile"] img {
+  filter: brightness(0) invert(1);
+}
+
+.tab.active#recipes {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 12px;
+  padding: 16px 16px 20px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.recipes-header {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #0d1418;
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 20px;
+}
+
+.recipes-grid > div {
+  display: contents;
+}
+
+.recipes-grid input[type="button"] {
+  inline-size: 100%;
+  block-size: 100%;
+  border: 1px solid #3b455a;
+  border-radius: 14px;
+  background: #0b1220;
+  color: #e5e7eb;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) inset,
+    0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.recipes-grid input[type="button"]:hover {
+  background: #16213a;
+}
+.recipes-grid input[type="button"]:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 560px) {
+  .recipes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
