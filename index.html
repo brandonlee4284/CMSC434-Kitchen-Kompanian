@@ -35,9 +35,42 @@
     <main>
       <!-- TAB 1 -->
       <section id="Inventory" class="tab active">
-        <h1 class="main-header">Welcome back to Kitchen Kompanion!</h1>
+        <button class="add-item" id="addItemBtn">＋</button>
+        <button class="back-btn" id="backBtn">←</button>
+        <div id="toast" class="toast"></div>
+
+        <div class="screen" id="mainScreen">
+          <div class="category fridge" data-cat="Fridge">Fridge</div>
+          <div class="category freezer" data-cat="Freezer">Freezer</div>
+          <div class="category pantry" data-cat="Pantry">Pantry</div>
+          <div class="category expiring" data-cat="Expiring Soon">Expiring Soon</div>
+          <div class="category expired" data-cat="Expired">Expired</div>
+        </div>
+
+        <div class="items-view" id="itemsView">
+          <div class="items-header">
+            <h2 id="categoryTitle"></h2>
+          </div>
+          <div class="cards" id="cardsContainer"></div>
+        </div>
+
+        <div class="modal" id="itemModal">
+          <div class="modal-content">
+            <h3 id="modalTitle">Add Item</h3>
+            <input type="text" id="itemName" placeholder="Item name" />
+            <input type="date" id="itemDate" />
+            <select id="itemCategory">
+              <option>Fridge</option>
+              <option>Freezer</option>
+              <option>Pantry</option>
+            </select>
+            <input type="number" id="itemQty" min="1" value="1" />
+            <button id="saveItemBtn">Save</button>
+          </div>
+        </div>
+        <!--<h1 class="main-header">Welcome back to Kitchen Kompanion!</h1>
         <div class="container">
-          <!-- Fridge List -->
+
           <div class="list" id="fridge-list">
             <h2>Current Fridge Items</h2>
             <input type="text" id="searchFridge" placeholder="Search foods..." />
@@ -68,7 +101,7 @@
               </table>
             </div>
           </div>
-        </div>
+        </div>-->
       </section>
 
 
