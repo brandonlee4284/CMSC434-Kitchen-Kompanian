@@ -144,54 +144,94 @@
 
       <!-- TAB 4 -->
       <section id="profile" class="tab" style="text-align:center; margin-top: 70px;">
-        <img src="icons/pfp.png" alt="Profile picture" style="width:160px;border-radius:50%;cursor:pointer;"
-          id="profileImg">
-        <h2 style="font-size:28px;font-weight:800;margin:0;">User 1</h2>
+        <img src="icons/pfp.png" alt="Profile picture"
+            style="width:160px;border-radius:50%;cursor:pointer;" id="profileImg">
+        <h2 style="font-size:28px;font-weight:800;margin:12px 0 6px;">User 1</h2>
 
-        <div style="margin-top:28px;display:grid;gap:18px;text-align:left;">
-          <div>
-            <label style="font-weight:800;font-size:18px;">Email:</label>
-            <input type="text" placeholder="bob@gmail.com"
-              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
-          </div>
-          <div>
-            <label style="font-weight:800;font-size:18px;">Favorite Recipes:</label>
-            <input type="text" placeholder="PB&J, Toast with Butter, Ultimate Butter, Fruit Salad"
-              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+        <button id="editBtn" class="btn-primary" aria-haspopup="dialog" aria-controls="editModal">
+          Edit
+        </button>
+
+        <div class="profile-grid">
+          <div class="field">
+            <div class="label">Email</div>
+            <div id="emailValue" class="value"></div>
           </div>
 
-          <div>
-            <label style="font-weight:800;font-size:18px;">Dislikes:</label>
-            <input type="text" placeholder="Everything"
-              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          <div class="field">
+            <div class="label">Favorite Recipes</div>
+            <div id="favoriteRecipesValue" class="value"></div>
           </div>
 
-          <div>
-            <label style="font-weight:800;font-size:18px;">Dietary Restrictions:</label>
-            <input type="text" placeholder="None"
-              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          <div class="field">
+            <div class="label">Dislikes</div>
+            <div id="dislikesValue" class="value"></div>
           </div>
 
-          <div>
-            <label style="font-weight:800;font-size:18px;">Allergies:</label>
-            <input type="text" placeholder="None"
-              style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;margin-top:6px;" />
+          <div class="field">
+            <div class="label">Dietary Restrictions</div>
+            <div id="dietaryRestrictionsValue" class="value"></div>
+          </div>
+
+          <div class="field">
+            <div class="label">Allergies</div>
+            <div id="allergiesValue" class="value"></div>
           </div>
         </div>
-        <button type="button" style="
-              margin-top:10px;
-              background:#254e70;
-              color:white;
-              border:0;
-              padding:10px 18px;
-              border-radius:12px;
-              font-weight:700;
-              cursor:pointer;">
-          Save
-        </button>
       </section>
-    </main>
-  </div>
+
+      <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3 id="modalTitle">Edit Profile</h3>
+            <button class="icon-btn" id="closeModalBtn" aria-label="Close">✕</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="modal-field">
+              <label class="modal-label" for="emailInput">Email</label>
+              <input id="emailInput" type="email" class="input" placeholder="name@example.com" />
+            </div>
+
+            <div class="modal-field">
+              <div class="modal-label-row">
+                <label class="modal-label">Favorite Recipes</label>
+                <button class="btn-secondary" data-add="favoriteRecipes">+ Add</button>
+              </div>
+              <div id="favoriteRecipesList" class="list"></div>
+            </div>
+
+            <div class="modal-field">
+              <div class="modal-label-row">
+                <label class="modal-label">Dislikes</label>
+                <button class="btn-secondary" data-add="dislikes">+ Add</button>
+              </div>
+              <div id="dislikesList" class="list"></div>
+            </div>
+
+            <div class="modal-field">
+              <div class="modal-label-row">
+                <label class="modal-label">Dietary Restrictions</label>
+                <button class="btn-secondary" data-add="dietaryRestrictions">+ Add</button>
+              </div>
+              <div id="dietaryRestrictionsList" class="list"></div>
+            </div>
+
+            <div class="modal-field">
+              <div class="modal-label-row">
+                <label class="modal-label">Allergies</label>
+                <button class="btn-secondary" data-add="allergies">+ Add</button>
+              </div>
+              <div id="allergiesList" class="list"></div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button id="saveBtn" class="btn-primary">Save</button>
+            <button id="cancelBtn" class="btn-ghost">Cancel</button>
+          </div>
+        </div>
+      </div>
 
   <script src="main.js"></script>
 </body>

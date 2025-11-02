@@ -32,6 +32,8 @@ let expiredItems = [
     { name: "Cheese", date: "2025-10-20", category: "Fridge", quantity: 1 },
 ];*/
 
+
+
 let currentCategory = null;
 let editingItem = null;
 
@@ -309,3 +311,236 @@ searchInput.addEventListener("input", (e) => {
 });
 
 renderTables();*/
+
+
+// Profile tab
+(function ProfileTab() {
+  const profileState = {
+    email: "bob@gmail.com",
+    favoriteRecipes: ["PB&J", "Toast with Butter", "Ultimate Butter", "Fruit Salad"],
+    dislikes: ["Olives", "Anchovies"],
+    dietaryRestrictions: ["None"],
+    allergies: ["None"]
+  };
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const commaJoin = (arr) => (Array.isArray(arr) && arr.length ? arr.join(", ") : "—");
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const profileSection = document.getElementById("profile");
+    if (!profileSection) return;
+
+    const avatar = $("#profileImg", profileSection);
+    const header = $("h2", profileSection);
+
+    const container = document.createElement("div");
+    container.className = "p-profile-container";
+
+    const editBtn = document.createElement("button");
+    editBtn.type = "button";
+    editBtn.id = "pEditBtn";
+    editBtn.className = "p-btn-primary";
+    editBtn.textContent = "Edit";
+    container.appendChild(editBtn);
+
+    const grid = document.createElement("div");
+    grid.className = "p-profile-grid";
+
+    const mkField = (labelText, valueId) => {
+      const wrap = document.createElement("div");
+      wrap.className = "p-field";
+      const label = document.createElement("div");
+      label.className = "p-label";
+      label.textContent = labelText;
+      const value = document.createElement("div");
+      value.className = "p-value";
+      value.id = valueId;
+      wrap.appendChild(label);
+      wrap.appendChild(value);
+      return wrap;
+    };
+
+    grid.appendChild(mkField("Email", "pEmailValue"));
+    grid.appendChild(mkField("Favorite Recipes", "pFavsValue"));
+    grid.appendChild(mkField("Dislikes", "pDislikesValue"));
+    grid.appendChild(mkField("Dietary Restrictions", "pDietValue"));
+    grid.appendChild(mkField("Allergies", "pAllergiesValue"));
+    container.appendChild(grid);
+
+    [...profileSection.children].forEach((child) => {
+      if (child !== avatar && child !== header) child.remove();
+    });
+    profileSection.appendChild(container);
+
+    const renderProfile = () => {
+      $("#pEmailValue").textContent = profileState.email || "—";
+      $("#pFavsValue").textContent = commaJoin(profileState.favoriteRecipes);
+      $("#pDislikesValue").textContent = commaJoin(profileState.dislikes);
+      $("#pDietValue").textContent = commaJoin(profileState.dietaryRestrictions);
+      $("#pAllergiesValue").textContent = commaJoin(profileState.allergies);
+    };
+    renderProfile();
+
+    const modal = document.createElement("div");
+    modal.id = "pProfileModal";
+    modal.className = "p-modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "pModalTitle");
+    modal.hidden = true;
+
+    modal.innerHTML = `
+      <div class="p-modal-card">
+        <div class="p-modal-header">
+          <h3 id="pModalTitle">Edit Profile</h3>
+          <button class="p-icon-btn" id="pCloseModal" aria-label="Close">✕</button>
+        </div>
+        <div class="p-modal-body">
+          <div class="p-modal-field">
+            <label class="p-modal-label" for="pEmailInput">Email</label>
+            <input id="pEmailInput" type="email" class="p-input" placeholder="name@example.com" />
+          </div>
+
+          ${[
+            { key: "favoriteRecipes", label: "Favorite Recipes" },
+            { key: "dislikes", label: "Dislikes" },
+            { key: "dietaryRestrictions", label: "Dietary Restrictions" },
+            { key: "allergies", label: "Allergies" }
+          ]
+            .map(
+              ({ key, label }) => `
+            <div class="p-modal-field" data-section="${key}">
+              <div class="p-modal-label-row">
+                <label class="p-modal-label">${label}</label>
+                <button class="p-btn-secondary" data-p-add="${key}">+ Add</button>
+              </div>
+              <div class="p-list" id="p-${key}-list"></div>
+            </div>`
+            )
+            .join("")}
+        </div>
+        <div class="p-modal-footer">
+          <button id="pSaveProfile" class="p-btn-primary">Save</button>
+          <button id="pCancelProfile" class="p-btn-ghost">Cancel</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const makeRow = (value = "") => {
+      const row = document.createElement("div");
+      row.className = "p-row";
+      row.innerHTML = `
+        <input type="text" class="p-input" value="${value.replace(/"/g, "&quot;")}" />
+        <button type="button" class="p-del-btn" aria-label="Delete">🗑</button>
+      `;
+      row.querySelector(".p-del-btn").addEventListener("click", () => row.remove());
+      return row;
+    };
+
+    const fillModal = () => {
+      $("#pEmailInput").value = profileState.email || "";
+      const map = [
+        ["favoriteRecipes", "#p-favoriteRecipes-list"],
+        ["dislikes", "#p-dislikes-list"],
+        ["dietaryRestrictions", "#p-dietaryRestrictions-list"],
+        ["allergies", "#p-allergies-list"]
+      ];
+      map.forEach(([key, sel]) => {
+        const list = $(sel);
+        list.innerHTML = "";
+        const values = Array.isArray(profileState[key]) ? profileState[key] : [];
+        if (!values.length) list.appendChild(makeRow(""));
+        else values.forEach((v) => list.appendChild(makeRow(v)));
+      });
+    };
+
+    const openModal = () => {
+      fillModal();
+      modal.hidden = false;
+      setTimeout(() => $("#pEmailInput").focus(), 0);
+    };
+    const closeModal = () => (modal.hidden = true);
+
+    editBtn.addEventListener("click", openModal);
+
+    $$("[data-p-add]", modal).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-p-add");
+        const list = $(`#p-${key}-list`);
+        list.appendChild(makeRow(""));
+        list.lastElementChild.querySelector("input").focus();
+      });
+    });
+
+    $("#pSaveProfile", modal).addEventListener("click", () => {
+      profileState.email = $("#pEmailInput").value.trim();
+
+      const collect = (sel) =>
+        $$(sel + " .p-input", modal)
+          .map((i) => i.value.trim())
+          .filter(Boolean);
+
+      profileState.favoriteRecipes = collect("#p-favoriteRecipes-list");
+      profileState.dislikes = collect("#p-dislikes-list");
+      profileState.dietaryRestrictions = collect("#p-dietaryRestrictions-list");
+      profileState.allergies = collect("#p-allergies-list");
+
+      renderProfile();
+      closeModal();
+    });
+
+    $("#pCancelProfile", modal).addEventListener("click", closeModal);
+    $("#pCloseModal", modal).addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.hidden) closeModal();
+    });
+  });
+})();
+
+// Profile picture upload
+(function ProfileAvatarUpload() {
+  document.addEventListener("DOMContentLoaded", () => {
+    const avatar = document.getElementById("profileImg");
+    if (!avatar) return;
+
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/png, image/jpeg, image/webp, image/gif";
+    fileInput.id = "pAvatarInput";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+
+    avatar.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+
+      const maxBytes = 6 * 1024 * 1024;
+      if (!file.type.startsWith("image/")) {
+        alert("Please choose an image file (PNG, JPEG, WEBP, GIF).");
+        fileInput.value = "";
+        return;
+      }
+      if (file.size > maxBytes) {
+        alert("That image is a bit large. Please pick one under 6MB.");
+        fileInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        avatar.src = reader.result;
+      };
+      reader.onerror = () => {
+        alert("Sorry, we couldn't read that file.");
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+})();
