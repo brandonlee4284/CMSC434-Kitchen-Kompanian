@@ -37,7 +37,7 @@ nav button {
   color: #94a3b8;
   font-weight: 600;
   cursor: pointer;
-  padding: 6px 0;
+  padding: 14px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,8 +50,8 @@ nav button.active {
 }
 
 nav button img {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   display: block;
 }
 
