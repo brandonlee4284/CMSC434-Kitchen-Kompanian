@@ -107,19 +107,16 @@
 
       <!-- TAB 2 -->
       <section id="shopping" class="tab">
-        <div style="display:flex;gap:8px;max-width:520px;">
-          <input id="newItem" placeholder="Add a new item..."
-            style="flex:1;background: white ;color:#e5e7eb;border:1px solid #334155;border-radius:10px;padding:10px;" />
-          <button id="addItem"
-            style="background:#22c55e;border:0;color:#0a0f1d;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;">
-            Add
-          </button>
-        </div>
+        <div class="shopping-list">
+          <div class="input-row">
+            <input id="newItem" placeholder="Add a new item..." />
+            <button id="addItem">Add Item</button>
+          </div>
 
-        <ul id="shoppingList" style="list-style:none;padding:0;margin:14px 0 6px;display:grid;gap:8px;"></ul>
-        <p style="color:#94a3b8;font-size:12px;margin:0;">
-          Tip: click a task to cross it off; use the × button to delete it.
-        </p>
+          <ul id="shoppingList"></ul>
+
+          <p class="tip">Tip: tap a task to cross it off; tap × to delete it.</p>
+        </div>
       </section>
 
       <!-- TAB 3 -->

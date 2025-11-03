@@ -498,3 +498,109 @@ nav button[data-tab="profile"] img {
   outline-offset: 4px;
   border-radius: 50%;
 }
+
+/*shopping tab*/
+.shopping-list {
+  font-family: system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.shopping-list .input-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.shopping-list input {
+  flex: 1;
+  background: white;
+  color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.shopping-list input:focus {
+  border-color: #22c55e;
+}
+
+.shopping-list button {
+  background: #22c55e;
+  border: 0;
+  color: #0a0f1d;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.shopping-list button:hover {
+  background: #16a34a;
+}
+
+.shopping-list button:active {
+  transform: scale(0.97);
+}
+
+.shopping-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 6px;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+.shopping-list li {
+  background: #3b82f6; /* nice blue */
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  color: white;
+  transition: background 0.2s;
+}
+
+.shopping-list li:hover {
+  background: #2563eb; /* darker blue on hover */
+}
+
+.shopping-list li.completed {
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.shopping-list .delete-btn {
+  background: transparent;
+  border: none;
+  color: #f87171;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.shopping-list .delete-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.shopping-list .tip {
+  color: #475569;
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
