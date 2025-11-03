@@ -544,3 +544,38 @@ renderTables();*/
     });
   });
 })();
+
+//shopping tab
+const input = document.getElementById('newItem');
+const addButton = document.getElementById('addItem');
+const list = document.getElementById('shoppingList');
+
+addButton.addEventListener('click', addItem);
+input.addEventListener('keypress', e => {
+    if (e.key === 'Enter') addItem();
+});
+
+function addItem() {
+    const value = input.value.trim();
+    if (!value) return;
+
+    const li = document.createElement('li');
+    li.textContent = value;
+
+    // click to cross off
+    li.addEventListener('click', e => {
+        if (e.target.tagName !== 'BUTTON') li.classList.toggle('completed');
+    });
+
+    // delete button
+    const del = document.createElement('button');
+    del.textContent = '×';
+    del.className = 'delete-btn';
+    del.addEventListener('click', () => li.remove());
+
+    li.appendChild(del);
+    list.appendChild(li);
+
+    input.value = '';
+    input.focus();
+}
