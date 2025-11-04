@@ -246,6 +246,14 @@ table {
   z-index: 1000;
 }
 
+.add-item:hover {
+  background: #4569fe;
+}
+
+.add-item:active {
+  transform: scale(0.97);
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -342,6 +350,14 @@ table {
   cursor: pointer;
 }
 
+.modal-content button:hover {
+  background: #4569fe;
+}
+
+.modal-content button:active {
+  transform: scale(0.97);
+}
+
 .back-btn {
   position: absolute;
   top: 20px;
@@ -390,7 +406,9 @@ nav button[data-tab="profile"] img {
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(37,78,112,.25);
 }
-.p-btn-primary:active { transform: translateY(1px); }
+.p-btn-primary:active { 
+  transform: translateY(1px); 
+}
 
 .p-btn-secondary {
   background: #e2e8f0;
@@ -454,7 +472,7 @@ nav button[data-tab="profile"] img {
 
 .p-modal-field { display: grid; gap: 8px; }
 .p-modal-label-row { display: flex; align-items:center; justify-content: space-between; }
-.p-modal-label { font-weight: 800; font-size: 16px; color: #475569; }
+.p-modal-label { font-weight: 800; font-size: 16px; color: #000000; }
 
 .p-list { 
   display: grid; 
@@ -531,13 +549,13 @@ nav button[data-tab="profile"] img {
 }
 
 .shopping-list input:focus {
-  border-color: #22c55e;
+  border-color: #2196f3;
 }
 
 .shopping-list button {
-  background: #22c55e;
+  background: #2196f3;
   border: 0;
-  color: #0a0f1d;
+  color: white;
   padding: 14px 20px;
   border-radius: 12px;
   font-weight: 700;
@@ -547,7 +565,7 @@ nav button[data-tab="profile"] img {
 }
 
 .shopping-list button:hover {
-  background: #16a34a;
+  background: #4569fe;
 }
 
 .shopping-list button:active {
@@ -569,7 +587,7 @@ nav button[data-tab="profile"] img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: 24px;
   color: white;
   transition: background 0.2s;
 }
@@ -579,15 +597,15 @@ nav button[data-tab="profile"] img {
 }
 
 .shopping-list li.completed {
-  text-decoration: line-through;
-  opacity: 0.8;
+  text-decoration: line-through red;
+  opacity: 0.5;
 }
 
 .shopping-list .delete-btn {
   background: transparent;
   border: none;
   color: #f87171;
-  font-size: 20px;
+  font-size: 30px;
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
@@ -600,7 +618,7 @@ nav button[data-tab="profile"] img {
 
 .shopping-list .tip {
   color: #475569;
-  font-size: 13px;
+  font-size: 16px;
   margin: 0;
   text-align: center;
 }
