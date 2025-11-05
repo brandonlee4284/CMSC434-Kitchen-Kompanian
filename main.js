@@ -32,6 +32,18 @@ let expiredItems = [
     { name: "Cheese", date: "2025-10-20", category: "Fridge", quantity: 1 },
 ];*/
 
+const ALLERGEN_SYNONYMS = {
+  dairy: ["dairy", "milk", "butter", "cheese", "yogurt", "cream", "parmesan", "sour cream"],
+  egg: ["egg", "eggs", "albumen"],
+  gluten: ["gluten", "wheat", "barley", "rye", "bread", "pasta"],
+  wheat: ["wheat", "bread", "pasta", "flour"],
+  peanut: ["peanut", "peanuts"],
+  "tree nuts": ["almond", "walnut", "pecan", "cashew", "hazelnut", "pistachio", "macadamia", "nut"],
+  soy: ["soy", "soybean", "tofu", "edamame", "soya"],
+  shellfish: ["shrimp", "prawn", "crab", "lobster", "shellfish"],
+  fish: ["fish", "salmon", "tuna", "cod", "trout", "anchovy"],
+  sesame: ["sesame", "tahini"]
+};
 
 
 let currentCategory = null;
@@ -323,6 +335,9 @@ renderTables();*/
     allergies: ["None"]
   };
 
+  window.getUserAllergies = () =>
+  Array.isArray(profileState.allergies) ? profileState.allergies : [];
+
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const commaJoin = (arr) => (Array.isArray(arr) && arr.length ? arr.join(", ") : "—");
@@ -486,8 +501,8 @@ renderTables();*/
       profileState.dislikes = collect("#p-dislikes-list");
       profileState.dietaryRestrictions = collect("#p-dietaryRestrictions-list");
       profileState.allergies = collect("#p-allergies-list");
-
       renderProfile();
+      window.dispatchEvent(new Event("recipes:refresh-allergens"));
       closeModal();
     });
 
@@ -579,3 +594,129 @@ function addItem() {
     input.value = '';
     input.focus();
 }
+
+document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.recipe-back').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById("recipes").classList.add("active");
+  });
+});
+
+document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.recipe-back').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById("recipes").classList.add("active");
+  });
+});
+
+(function oneOpenAccordion(){
+  const container = document.getElementById('recipes-easy');
+  if (!container) return;
+  container.querySelectorAll('details.r-item').forEach(d => {
+    d.addEventListener('toggle', () => {
+      if (d.open) {
+        container.querySelectorAll('details.r-item').forEach(other => {
+          if (other !== d) other.open = false;
+        });
+      }
+    });
+  });
+})();
+
+function norm(s) { return (s || "").toLowerCase().trim(); }
+
+function expandAllergyTerms(allergy) {
+  const a = norm(allergy);
+  const set = new Set([a]);
+  const list = ALLERGEN_SYNONYMS[a] || [];
+  list.forEach(t => set.add(norm(t)));
+  return set;
+}
+
+function parseIngredients(str) {
+  return new Set(
+    (str || "")
+      .split(",")
+      .map(norm)
+      .filter(Boolean)
+  );
+}
+
+function checkRecipeForAllergens(ingredientsSet, userAllergies) {
+  const hits = new Set();
+
+  userAllergies
+    .map(norm)
+    .filter(a => a && a !== "none")
+    .forEach(a => {
+      const terms = expandAllergyTerms(a);
+      ingredientsSet.forEach(ing => {
+        for (const term of terms) {
+          if (ing.includes(term)) {
+            hits.add(a);
+            break;
+          }
+        }
+      });
+    });
+
+  return Array.from(hits);
+}
+
+function markRecipeAllergens(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+
+  const allergies = (typeof window.getUserAllergies === "function")
+    ? window.getUserAllergies()
+    : [];
+
+  section.querySelectorAll(".allergen-badge").forEach(b => b.remove());
+
+  section.querySelectorAll("details.r-item").forEach(item => {
+    item.classList.remove("allergen");
+    const ingredientsAttr = item.getAttribute("data-ingredients") || "";
+    const ingredientsSet = parseIngredients(ingredientsAttr);
+    const hits = checkRecipeForAllergens(ingredientsSet, allergies);
+
+    if (hits.length) {
+      item.classList.add("allergen");
+      const summary = item.querySelector(".r-btn");
+      if (summary) {
+        const badge = document.createElement("span");
+        badge.className = "allergen-badge";
+        badge.textContent = `Contains: ${hits.join(", ")}`;
+        summary.appendChild(badge);
+      }
+    }
+  });
+}
+
+document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+    markRecipeAllergens(target);
+  });
+});
+
+window.addEventListener("recipes:refresh-allergens", () => {
+  ["recipes-easy", "recipes-medium", "recipes-hard"].forEach(markRecipeAllergens);
+});

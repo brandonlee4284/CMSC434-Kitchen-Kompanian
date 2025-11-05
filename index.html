@@ -120,21 +120,213 @@
       </section>
 
       <!-- TAB 3 -->
-      <section id="recipes" class="tab">
-        <h2 class="recipes-header">Recipes</h2>
-        <div class="recipes-grid">
-          <div><input type="button" id="seafood" value="Seafood" /></div>
-          <div><input type="button" id="soups" value="Soups" /></div>
-          <div><input type="button" id="salads" value="Salads" /></div>
-          <div><input type="button" id="meat" value="Meats" /></div>
-          <div><input type="button" id="sauces" value="Sauces" /></div>
-          <div><input type="button" id="desserts" value="Desserts" /></div>
-          <div><input type="button" id="eggs" value="Eggs" /></div>
-          <div><input type="button" id="beverages" value="Beverages" /></div>
-          <div><input type="button" id="bread" value="Bread" /></div>
-          <div><input type="button" id="pasta" value="Pasta" /></div>
-          <div><input type="button" id="dairy" value="Dairy" /></div>
-          <div><input type="button" id="pizza" value="Pizza" /></div>
+    <section id="recipes" class="tab">
+      <div class="recipes-grid">
+        <div><input type="button" value="Easy" data-tab="recipes-easy" /></div>
+        <div><input type="button" value="Medium" data-tab="recipes-medium" /></div>
+        <div><input type="button" value="Hard" data-tab="recipes-hard" /></div>
+      </div>
+    </section>
+
+      <section id="recipes-easy" class="tab">
+        <button class="back-btn recipe-back">←</button>
+        <div class="easy-center">
+        <h1 style="text-align:center; margin-top:80px;">Easy Recipes</h1>
+        <div class="recipe-accordion">
+          <details class="r-item" data-ingredients="pasta, wheat, butter, garlic, parmesan, dairy">
+            <summary class="r-btn">Garlic Butter Pasta</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>1 serving pasta</li>
+                <li>2 tbsp butter</li>
+                <li>1–2 cloves garlic (minced) or ½ tsp garlic powder</li>
+                <li>Salt &amp; pepper</li>
+                <li>Optional: Parmesan, red pepper flakes</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Boil pasta in salted water per package.</li>
+                <li>Melt butter in a pan on low; add garlic 30–60s (don’t brown).</li>
+                <li>Drain pasta, toss in butter, season, add optional toppings.</li>
+              </ol>
+            </div>
+          </details>
+          
+          <details class="r-item" data-ingredients="egg, cheese, butter, bread, wheat, gluten, dairy">
+            <summary class="r-btn">Egg &amp; Cheese Breakfast Sandwich</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>1 egg</li>
+                <li>1 slice cheese</li>
+                <li>1 English muffin or toast</li>
+                <li>1 tsp butter</li>
+                <li>Salt &amp; pepper</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Toast the bread.</li>
+                <li>Cook egg in butter to preference; top with cheese to melt.</li>
+                <li>Assemble on toast; season. Optional: hot sauce or ketchup.</li>
+              </ol>
+            </div>
+          </details>
+          
+          <details class="r-item" data-ingredients="tortilla, wheat, gluten, cheese, dairy, bell pepper, onion, olive oil, salsa">
+            <summary class="r-btn">Veggie Quesadilla</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>1 large flour tortilla</li>
+                <li>½–1 cup shredded cheese</li>
+                <li>½ cup sliced peppers/onions</li>
+                <li>1 tsp olive oil, salsa (for serving)</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Sauté peppers/onions in oil 2–3 min until soft.</li>
+                <li>Place tortilla in pan, add cheese + veggies; fold.</li>
+                <li>Cook 1–2 min per side until golden and melty. Slice and serve with salsa.</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+        </div>
+      </section>
+
+      <section id="recipes-medium" class="tab">
+        <button class="back-btn recipe-back">←</button>
+        <h1 style="text-align:center; margin-top:80px;">Medium Recipes</h1>
+
+        <div class="recipe-accordion">
+          <details class="r-item" data-ingredients="chicken, bell pepper, broccoli, garlic, ginger, soy sauce, sesame oil, cornstarch, rice, soy, sesame">
+            <summary class="r-btn">Chicken Veggie Stir-Fry</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>2 cups mixed veggies (bell pepper, broccoli, etc.)</li>
+                <li>1 lb chicken breast, sliced thin</li>
+                <li>2 cloves garlic, 1 tsp grated ginger</li>
+                <li>3 tbsp soy sauce, 1 tsp sesame oil, 1 tsp cornstarch</li>
+                <li>Cooked rice for serving</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Toss chicken with 1 tbsp soy + cornstarch.</li>
+                <li>Stir-fry chicken 3–4 min; remove.</li>
+                <li>Stir-fry veggies 3–4 min; add garlic &amp; ginger 30s.</li>
+                <li>Return chicken, add remaining soy + sesame oil; toss to coat.</li>
+                <li>Serve over rice.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="r-item" data-ingredients="salmon, fish, lemon, olive oil, garlic, parsley, butter, dairy">
+            <summary class="r-btn">Lemon Herb Baked Salmon</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>2 salmon fillets</li>
+                <li>1 lemon (zest &amp; slices)</li>
+                <li>1 tbsp olive oil, 1 tbsp butter (optional)</li>
+                <li>1 clove garlic, chopped parsley</li>
+                <li>Salt &amp; pepper</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Heat oven to 400°F/205°C. Line tray.</li>
+                <li>Season salmon; top with oil, lemon zest/slices, parsley, garlic.</li>
+                <li>Add butter on top (optional). Bake 10–12 min until flaky.</li>
+              </ol>
+            </div>
+          </details>
+          
+          <details class="r-item" data-ingredients="ground turkey, onion, garlic, bell pepper, crushed tomatoes, kidney beans, chili powder, cumin, olive oil, chicken stock">
+            <summary class="r-btn">Turkey Chili</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>1 lb ground turkey</li>
+                <li>1 onion, 2 cloves garlic, 1 bell pepper (diced)</li>
+                <li>1 can crushed tomatoes (14–15 oz), 1 can kidney beans (drained)</li>
+                <li>1–2 tbsp chili powder, 1 tsp cumin, salt &amp; pepper</li>
+                <li>1 tbsp olive oil, 1 cup chicken stock (or water)</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Sauté onion/pepper in oil 3–4 min; add garlic 30s.</li>
+                <li>Brown turkey, breaking up, 4–5 min; season.</li>
+                <li>Add tomatoes, beans, stock, spices; simmer 20–25 min. Adjust seasoning.</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="recipes-hard" class="tab">
+        <button class="back-btn recipe-back">←</button>
+        <h1 style="text-align:center; margin-top:80px;">Hard Recipes</h1>
+
+        <div class="recipe-accordion">
+          <details class="r-item" data-ingredients="flour, wheat, gluten, yeast, water, salt, olive oil, tomato, mozzarella, cheese, dairy, basil">
+            <summary class="r-btn">Margherita Pizza (from scratch)</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>Dough: 2½ cups flour, 1 tsp yeast, 1 tsp salt, 1 cup warm water, 1 tbsp olive oil</li>
+                <li>Toppings: ¾ cup crushed tomatoes, 8 oz fresh mozzarella, basil, olive oil, salt</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Mix dough, knead 5–7 min; rise 60–90 min until doubled.</li>
+                <li>Heat oven to 500°F/260°C (stone if possible).</li>
+                <li>Shape dough 12", top with tomatoes, mozzarella, basil, oil, salt.</li>
+                <li>Bake 8–12 min until blistered and golden.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="r-item" data-ingredients="beef, bacon, butter, dairy, onion, carrot, garlic, tomato paste, red wine, beef stock, mushrooms, flour, wheat, gluten, thyme, bay leaf">
+            <summary class="r-btn">Beef Bourguignon</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>2 lb beef chuck, cubes; 4 oz bacon</li>
+                <li>1 tbsp flour, 1 tbsp tomato paste</li>
+                <li>1 cup red wine, 2 cups beef stock</li>
+                <li>Onion, carrot, garlic, mushrooms</li>
+                <li>Butter/oil, thyme, bay leaf, salt &amp; pepper</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Brown bacon; remove. Brown beef in batches.</li>
+                <li>Sauté onion/carrot; add garlic, tomato paste, flour; cook 1 min.</li>
+                <li>Deglaze with wine; add stock, beef, bacon, herbs. Simmer covered 2–3 hrs until tender.</li>
+                <li>Sauté mushrooms in butter; stir in for last 10 min. Adjust seasoning.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="r-item" data-ingredients="chicken, egg, flour, wheat, gluten, breadcrumbs, parmesan, mozzarella, cheese, dairy, tomato sauce, olive oil, basil">
+            <summary class="r-btn">Chicken Parmesan</summary>
+            <div class="r-panel">
+              <h3>Ingredients</h3>
+              <ul>
+                <li>2 chicken cutlets (pounded ½″)</li>
+                <li>¼ cup flour, 1 beaten egg, ½ cup breadcrumbs</li>
+                <li>½ cup tomato sauce</li>
+                <li>¼ cup grated Parmesan, ½ cup mozzarella</li>
+                <li>Olive oil, salt &amp; pepper, basil (optional)</li>
+              </ul>
+              <h3>Instructions</h3>
+              <ol>
+                <li>Season chicken; dredge in flour, egg, then breadcrumbs.</li>
+                <li>Pan-fry in oil 3–4 min/side until golden and ~165°F.</li>
+                <li>Top with sauce, Parmesan, mozzarella; broil 1–3 min to melt. Garnish with basil.</li>
+              </ol>
+            </div>
+          </details>
         </div>
       </section>
 
