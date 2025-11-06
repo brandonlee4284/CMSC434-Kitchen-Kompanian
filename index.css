@@ -400,13 +400,13 @@ nav button[data-tab="profile"] img {
 
 .p-modal-card {
   width: 100%;
-  max-width: 720px;
+  max-width: 600px;
   background: #ffffff;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(2,8,23,.12);
   border: 1px solid #cbd5e1;
   overflow: hidden;
-  max-height: 80vh;
+  max-height: 70vh;
   display: flex;
   flex-direction: column;
 }

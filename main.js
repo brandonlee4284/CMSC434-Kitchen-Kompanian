@@ -329,8 +329,8 @@ renderTables();*/
 (function ProfileTab() {
   const profileState = {
     email: "bob@gmail.com",
-    favoriteRecipes: ["PB&J", "Toast with Butter", "Ultimate Butter", "Fruit Salad"],
-    dislikes: ["Olives", "Anchovies"],
+    favoriteRecipes: ["Garlic Butter Pasta", "Lemon Herb Baked Salmon", "Beef Bourguignon"],
+    dislikes: ["Cheese", "Anchovies"],
     dietaryRestrictions: ["None"],
     allergies: ["None"]
   };
