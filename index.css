@@ -340,18 +340,25 @@ nav button[data-tab="profile"] img {
 .p-label { font-weight: 800; font-size: 16px; margin-bottom: 6px; color: #475569; }
 .p-value { font-size: 16px; line-height: 1.5; word-break: break-word; }
 
-.p-btn-primary {
-  background: #254e70;
+.p-btn-primary { /*edit and save button*/
+  background: #2196f3;
   color: white;
   border: 0;
-  padding: 10px 18px;
+  padding: 14px 20px;
   border-radius: 12px;
   font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(37,78,112,.25);
 }
+
+.p-btn-primary:hover { 
+  background: #4569fe;
+}
+
 .p-btn-primary:active { 
   transform: translateY(1px); 
+  transform: scale(0.97);
 }
 
 .p-btn-secondary {
@@ -363,15 +370,27 @@ nav button[data-tab="profile"] img {
   font-weight: 700;
   cursor: pointer;
 }
-.p-btn-ghost {
+.p-btn-ghost { /*cancel button*/
   background: transparent;
   border: 1px solid #cbd5e1;
   color: #0f172a;
-  padding: 10px 18px;
+  padding: 14px 20px;
   border-radius: 12px;
   font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
 }
+
+.p-btn-ghost:hover { 
+  background: #7a7a7a;
+}
+
+.p-btn-ghost:active { 
+  transform: translateY(1px); 
+  transform: scale(0.97);
+}
+
+
 .p-icon-btn {
   border: 0;
   background: transparent;
