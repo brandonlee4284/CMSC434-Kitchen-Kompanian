@@ -330,9 +330,7 @@ renderTables();*/
   const profileState = {
     email: "bob@gmail.com",
     favoriteRecipes: ["Garlic Butter Pasta", "Lemon Herb Baked Salmon", "Beef Bourguignon"],
-    dislikes: ["Cheese", "Anchovies"],
-    dietaryRestrictions: ["None"],
-    allergies: ["None"]
+    allergies: ["Cheese"]
   };
 
   window.getUserAllergies = () =>
@@ -378,8 +376,6 @@ renderTables();*/
 
     grid.appendChild(mkField("Email", "pEmailValue"));
     grid.appendChild(mkField("Favorite Recipes", "pFavsValue"));
-    grid.appendChild(mkField("Dislikes", "pDislikesValue"));
-    grid.appendChild(mkField("Dietary Restrictions", "pDietValue"));
     grid.appendChild(mkField("Allergies", "pAllergiesValue"));
     container.appendChild(grid);
 
@@ -391,8 +387,6 @@ renderTables();*/
     const renderProfile = () => {
       $("#pEmailValue").textContent = profileState.email || "—";
       $("#pFavsValue").textContent = commaJoin(profileState.favoriteRecipes);
-      $("#pDislikesValue").textContent = commaJoin(profileState.dislikes);
-      $("#pDietValue").textContent = commaJoin(profileState.dietaryRestrictions);
       $("#pAllergiesValue").textContent = commaJoin(profileState.allergies);
     };
     renderProfile();
@@ -419,8 +413,6 @@ renderTables();*/
 
           ${[
             { key: "favoriteRecipes", label: "Favorite Recipes" },
-            { key: "dislikes", label: "Dislikes" },
-            { key: "dietaryRestrictions", label: "Dietary Restrictions" },
             { key: "allergies", label: "Allergies" }
           ]
             .map(
@@ -457,9 +449,7 @@ renderTables();*/
     const fillModal = () => {
       $("#pEmailInput").value = profileState.email || "";
       const map = [
-        ["favoriteRecipes", "#p-favoriteRecipes-list"],
-        ["dislikes", "#p-dislikes-list"],
-        ["dietaryRestrictions", "#p-dietaryRestrictions-list"],
+        ["favoriteRecipes", "#p-favoriteRecipes-list"],        
         ["allergies", "#p-allergies-list"]
       ];
       map.forEach(([key, sel]) => {
@@ -498,8 +488,6 @@ renderTables();*/
           .filter(Boolean);
 
       profileState.favoriteRecipes = collect("#p-favoriteRecipes-list");
-      profileState.dislikes = collect("#p-dislikes-list");
-      profileState.dietaryRestrictions = collect("#p-dietaryRestrictions-list");
       profileState.allergies = collect("#p-allergies-list");
       renderProfile();
       window.dispatchEvent(new Event("recipes:refresh-allergens"));

@@ -149,11 +149,11 @@ table {
   transform: scale(1.05);
 }
 
-.fridge { background: #4569fe; }
-.freezer { background: #4569fe; }
-.pantry { background: #4569fe; }
-.expiring { background: #4569fe; }
-.expired { background: #4569fe; }
+.fridge { background: #4569fe; border-radius: 10px;}
+.freezer { background: #4569fe; border-radius: 10px;}
+.pantry { background: #4569fe; border-radius: 10px;}
+.expiring { background: #4569fe; border-radius: 10px;}
+.expired { background: #4569fe; border-radius: 10px;}
 
 /* Item grid view */
 .items-view {
@@ -610,6 +610,7 @@ nav button[data-tab="profile"] img {
   font-weight:700;
   font-size:2rem;
   border:0;
+  border-radius: 10px;
   padding:60px 0;
   width:100%;
   text-align:center;
