@@ -330,7 +330,7 @@ renderTables();*/
   const profileState = {
     email: "bob@gmail.com",
     favoriteRecipes: ["Garlic Butter Pasta", "Lemon Herb Baked Salmon", "Beef Bourguignon"],
-    allergies: ["Cheese"]
+    allergies: ["Fish"]
   };
 
   window.getUserAllergies = () =>
