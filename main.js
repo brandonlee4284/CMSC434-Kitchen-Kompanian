@@ -877,4 +877,130 @@ window.addEventListener("recipes:refresh-allergens", () => {
   ["recipes-easy", "recipes-medium", "recipes-hard"].forEach(markRecipeAllergens);
 });
 
+function buildRecipeIndex() {
+  const buckets = [
+    { id: "recipes-easy",   diff: "easy" },
+    { id: "recipes-medium", diff: "medium" },
+    { id: "recipes-hard",   diff: "hard" }
+  ];
 
+  const index = [];
+  buckets.forEach(({ id, diff }) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    section.querySelectorAll('details.r-item').forEach(d => {
+      const title = (d.querySelector('.r-btn')?.textContent || '').trim();
+      index.push({
+        id: d.getAttribute('data-id') || `${diff}-${title.toLowerCase().replace(/\s+/g,'-')}`,
+        title,
+        difficulty: diff,
+        ingredientsSet: parseIngredients(d.getAttribute('data-ingredients') || ''),
+      });
+    });
+  });
+  return index;
+}
+
+function tokenizeQuery(q) {
+  return (q || "")
+    .split(",")
+    .map(s => s.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function recipeMatches(tokens, mode, ingredientsSet) {
+  if (!tokens.length) return true;
+  const ingTokens = Array.from(ingredientsSet);
+  const hasMatch = (t) => ingTokens.some(ing => ing.includes(t));
+  return (mode === "all") ? tokens.every(hasMatch) : tokens.some(hasMatch);
+}
+
+function openRecipeById(recipeId) {
+  let sectionId = "recipes-easy";
+  if (recipeId.startsWith("medium-")) sectionId = "recipes-medium";
+  if (recipeId.startsWith("hard-"))   sectionId = "recipes-hard";
+
+  document.querySelectorAll('section.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+
+  const target = document.querySelector(`#${sectionId} details.r-item[data-id="${recipeId}"]`);
+  if (target) {
+    target.open = true;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  if (typeof markRecipeAllergens === 'function') {
+    markRecipeAllergens(sectionId);
+  }
+}
+
+function renderRecipeResults(recipes) {
+  const list = document.getElementById('recipesResultsList');
+  const empty = document.getElementById('recipesResultsEmpty');
+  list.innerHTML = '';
+
+  if (!recipes.length) {
+    empty.hidden = false;
+    return;
+  }
+  empty.hidden = true;
+
+  recipes.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.setAttribute('data-id', r.id);
+
+    const badge = `<span class="badge ${r.difficulty}">${r.difficulty[0].toUpperCase() + r.difficulty.slice(1)}</span>`;
+    card.innerHTML = `
+      <div class="result-title">
+        <span>${r.title}</span>
+        ${badge}
+      </div>
+      <div class="result-meta">Contains: ${Array.from(r.ingredientsSet).join(', ')}</div>
+    `;
+
+    card.addEventListener('click', () => openRecipeById(r.id));
+    list.appendChild(card);
+  });
+}
+
+function wireMainRecipeFilter() {
+  const grid     = document.getElementById('recipesGrid');
+  const results  = document.getElementById('recipesResults');
+  const queryEl  = document.getElementById('recipesQuery');
+  const clearBtn = document.getElementById('recipesClear');
+  const modeEls  = document.querySelectorAll('input[name="recipes-mode"]');
+
+  if (!grid || !results || !queryEl) return;
+
+  let INDEX = buildRecipeIndex();
+
+  const run = () => {
+    const tokens = tokenizeQuery(queryEl.value);
+    const mode = Array.from(modeEls).find(r => r.checked)?.value || 'any';
+    if (!tokens.length) {
+      results.hidden = true;
+      grid.style.display = '';
+      return;
+    }
+    const matches = INDEX.filter(r => recipeMatches(tokens, mode, r.ingredientsSet));
+    renderRecipeResults(matches);
+    results.hidden = false;
+    grid.style.display = 'none';
+  };
+
+  queryEl.addEventListener('input', run);
+  modeEls.forEach(r => r.addEventListener('change', run));
+  clearBtn.addEventListener('click', () => {
+    queryEl.value = '';
+    const any = document.querySelector('input[name="recipes-mode"][value="any"]');
+    if (any) any.checked = true;
+    run();
+  });
+
+  window.addEventListener('recipes:reindex', () => { INDEX = buildRecipeIndex(); run(); });
+
+  run();
+}
+
+document.addEventListener('DOMContentLoaded', wireMainRecipeFilter);

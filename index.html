@@ -121,10 +121,26 @@
 
       <!-- TAB 3 -->
     <section id="recipes" class="tab">
-      <div class="recipes-grid">
+      <div class="recipes-filter">
+        <div class="row">
+          <input id="recipesQuery" type="text" placeholder="Search all recipes by ingredients (e.g. garlic, butter)" />
+          <button id="recipesClear" type="button" class="clear-btn">Clear</button>
+        </div>
+        <div class="row">
+          <label><input type="radio" name="recipes-mode" value="any" checked> Match ANY</label>
+          <label><input type="radio" name="recipes-mode" value="all"> Match ALL</label>
+        </div>
+      </div>
+
+      <div id="recipesGrid" class="recipes-grid">
         <div><input type="button" value="Easy" data-tab="recipes-easy" /></div>
         <div><input type="button" value="Medium" data-tab="recipes-medium" /></div>
         <div><input type="button" value="Hard" data-tab="recipes-hard" /></div>
+      </div>
+
+      <div id="recipesResults" class="recipes-results" hidden>
+        <div class="results-list" id="recipesResultsList"></div>
+        <p class="results-empty" id="recipesResultsEmpty" hidden>No recipes match that filter.</p>
       </div>
     </section>
 
@@ -133,7 +149,7 @@
         <div class="easy-center">
         <h1 style="text-align:center; margin-top:80px;">Easy Recipes</h1>
         <div class="recipe-accordion">
-          <details class="r-item" data-ingredients="pasta, wheat, butter, garlic, parmesan, dairy">
+          <details class="r-item" data-id="easy-garlic-butter-pasta" data-ingredients="pasta, wheat, butter, garlic, parmesan, dairy">
             <summary class="r-btn">Garlic Butter Pasta</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -153,7 +169,7 @@
             </div>
           </details>
           
-          <details class="r-item" data-ingredients="egg, cheese, butter, bread, wheat, gluten, dairy">
+          <details class="r-item" data-id="easy-egg-cheese-sandwich" data-ingredients="egg, cheese, butter, bread, wheat, gluten, dairy">
             <summary class="r-btn">Egg &amp; Cheese Breakfast Sandwich</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -173,7 +189,7 @@
             </div>
           </details>
           
-          <details class="r-item" data-ingredients="tortilla, wheat, gluten, cheese, dairy, bell pepper, onion, olive oil, salsa">
+          <details class="r-item" data-id="easy-veggie-quesadilla" data-ingredients="tortilla, wheat, gluten, cheese, dairy, bell pepper, onion, olive oil, salsa">
             <summary class="r-btn">Veggie Quesadilla</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -200,7 +216,7 @@
         <h1 style="text-align:center; margin-top:80px;">Medium Recipes</h1>
 
         <div class="recipe-accordion">
-          <details class="r-item" data-ingredients="chicken, bell pepper, broccoli, garlic, ginger, soy sauce, sesame oil, cornstarch, rice, soy, sesame">
+          <details class="r-item" data-id="medium-chicken-stir-fry" data-ingredients="chicken, bell pepper, broccoli, garlic, ginger, soy sauce, sesame oil, cornstarch, rice, soy, sesame">
             <summary class="r-btn">Chicken Veggie Stir-Fry</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -222,7 +238,7 @@
             </div>
           </details>
 
-          <details class="r-item" data-ingredients="salmon, fish, lemon, olive oil, garlic, parsley, butter, dairy">
+          <details class="r-item" data-id="medium-lemon-herb-salmon" data-ingredients="salmon, fish, lemon, olive oil, garlic, parsley, butter, dairy">
             <summary class="r-btn">Lemon Herb Baked Salmon</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -242,7 +258,7 @@
             </div>
           </details>
           
-          <details class="r-item" data-ingredients="ground turkey, onion, garlic, bell pepper, crushed tomatoes, kidney beans, chili powder, cumin, olive oil, chicken stock">
+          <details class="r-item" data-id="medium-turkey-chili" data-ingredients="ground turkey, onion, garlic, bell pepper, crushed tomatoes, kidney beans, chili powder, cumin, olive oil, chicken stock">
             <summary class="r-btn">Turkey Chili</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -269,7 +285,7 @@
         <h1 style="text-align:center; margin-top:80px;">Hard Recipes</h1>
 
         <div class="recipe-accordion">
-          <details class="r-item" data-ingredients="flour, wheat, gluten, yeast, water, salt, olive oil, tomato, mozzarella, cheese, dairy, basil">
+          <details class="r-item" data-id="hard-margherita-pizza" data-ingredients="flour, wheat, gluten, yeast, water, salt, olive oil, tomato, mozzarella, cheese, dairy, basil">
             <summary class="r-btn">Margherita Pizza (from scratch)</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -287,7 +303,7 @@
             </div>
           </details>
 
-          <details class="r-item" data-ingredients="beef, bacon, butter, dairy, onion, carrot, garlic, tomato paste, red wine, beef stock, mushrooms, flour, wheat, gluten, thyme, bay leaf">
+          <details class="r-item" data-id="hard-beef-bourguignon" data-ingredients="beef, bacon, butter, dairy, onion, carrot, garlic, tomato paste, red wine, beef stock, mushrooms, flour, wheat, gluten, thyme, bay leaf">
             <summary class="r-btn">Beef Bourguignon</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
@@ -308,7 +324,7 @@
             </div>
           </details>
 
-          <details class="r-item" data-ingredients="chicken, egg, flour, wheat, gluten, breadcrumbs, parmesan, mozzarella, cheese, dairy, tomato sauce, olive oil, basil">
+          <details class="r-item" data-id="hard-chicken-parmesean" data-ingredients="chicken, egg, flour, wheat, gluten, breadcrumbs, parmesan, mozzarella, cheese, dairy, tomato sauce, olive oil, basil">
             <summary class="r-btn">Chicken Parmesan</summary>
             <div class="r-panel">
               <h3>Ingredients</h3>
