@@ -7,11 +7,23 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
     document.getElementById(btn.dataset.tab).classList.add("active");
 }));
 
+const today = new Date();
+
+function formatDate(date) {
+    return date.toISOString().split("T")[0];
+}
+
+function addDays(baseDate, days) {
+    const result = new Date(baseDate);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
 let fridgeItems = [
-    { name: "Milk", date: "2025-11-02", category: "Fridge", quantity: 1 },
-    { name: "Eggs", date: "2025-11-10", category: "Fridge", quantity: 12 },
-    { name: "Yogurt", date: "2025-11-01", category: "Fridge", quantity: 2 },
-    { name: "Cheese", date: "2025-10-20", category: "Fridge", quantity: 1 },
+    { name: "Milk", date: formatDate(addDays(today, 2)), category: "Fridge", quantity: 1 },
+    { name: "Eggs", date: formatDate(addDays(today, 5)), category: "Fridge", quantity: 12 },
+    { name: "Yogurt", date: formatDate(addDays(today, -1)), category: "Fridge", quantity: 2 },
+    { name: "Cheese", date: formatDate(addDays(today, 10)), category: "Fridge", quantity: 1 },
 ];
 
 let freezerItems = [
@@ -558,12 +570,12 @@ input.addEventListener('keypress', e => {
     if (e.key === 'Enter') addItem();
 });
 
-function addItem() {
-    const value = input.value.trim();
-    if (!value) return;
+function addItem(value) {
+    const text = (typeof value === 'string' ? value : input.value.trim());
+    if (!text) return;
 
     const li = document.createElement('li');
-    li.textContent = value;
+    li.textContent = text;
 
     // click to cross off
     li.addEventListener('click', e => {
@@ -582,6 +594,10 @@ function addItem() {
     input.value = '';
     input.focus();
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    ['Milk', 'Eggs', 'Bread'].forEach(addItem);
+});
 
 document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
   btn.addEventListener('click', () => {
