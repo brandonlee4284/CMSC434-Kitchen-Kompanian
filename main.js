@@ -408,7 +408,7 @@ renderTables();*/
         <div class="p-modal-body">
           <div class="p-modal-field">
             <label class="p-modal-label" for="pEmailInput">Email</label>
-            <input id="pEmailInput" type="email" class="p-input" placeholder="name@example.com" />
+            <input style="width: 86.3%" id="pEmailInput" type="email" class="p-input" placeholder="name@example.com" />
           </div>
 
           ${[
