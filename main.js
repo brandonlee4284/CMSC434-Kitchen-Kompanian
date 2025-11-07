@@ -756,21 +756,7 @@ document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
     const target = btn.dataset.tab;
     document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
     document.getElementById(target).classList.add('active');
-  });
-});
-
-document.querySelectorAll('.recipe-back').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
-    document.getElementById("recipes").classList.add("active");
-  });
-});
-
-document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
-    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
-    document.getElementById(target).classList.add('active');
+    markRecipeAllergens(target);
   });
 });
 
@@ -797,14 +783,6 @@ document.querySelectorAll('.recipe-back').forEach(btn => {
 
 function norm(s) { return (s || "").toLowerCase().trim(); }
 
-function expandAllergyTerms(allergy) {
-  const a = norm(allergy);
-  const set = new Set([a]);
-  const list = ALLERGEN_SYNONYMS[a] || [];
-  list.forEach(t => set.add(norm(t)));
-  return set;
-}
-
 function parseIngredients(str) {
   return new Set(
     (str || "")
@@ -814,25 +792,10 @@ function parseIngredients(str) {
   );
 }
 
-function checkRecipeForAllergens(ingredientsSet, userAllergies) {
-  const hits = new Set();
-
-  userAllergies
+function checkRecipeForAllergens(ingredientsSet, allergies) {
+  return allergies
     .map(norm)
-    .filter(a => a && a !== "none")
-    .forEach(a => {
-      const terms = expandAllergyTerms(a);
-      ingredientsSet.forEach(ing => {
-        for (const term of terms) {
-          if (ing.includes(term)) {
-            hits.add(a);
-            break;
-          }
-        }
-      });
-    });
-
-  return Array.from(hits);
+    .filter(a => a && a !== "none" && Array.from(ingredientsSet).some(ing => ing.includes(a)));
 }
 
 function markRecipeAllergens(sectionId) {
@@ -844,163 +807,109 @@ function markRecipeAllergens(sectionId) {
     : [];
 
   section.querySelectorAll(".allergen-badge").forEach(b => b.remove());
-
   section.querySelectorAll("details.r-item").forEach(item => {
     item.classList.remove("allergen");
-    const ingredientsAttr = item.getAttribute("data-ingredients") || "";
-    const ingredientsSet = parseIngredients(ingredientsAttr);
+    const ingredientsSet = parseIngredients(item.getAttribute("data-ingredients") || '');
     const hits = checkRecipeForAllergens(ingredientsSet, allergies);
 
     if (hits.length) {
       item.classList.add("allergen");
-      const summary = item.querySelector(".r-btn");
-      if (summary) {
-        const badge = document.createElement("span");
-        badge.className = "allergen-badge";
-        badge.textContent = `Contains: ${hits.join(", ")}`;
-        summary.appendChild(badge);
-      }
+      const label = item.querySelector(".r-btn");
+      const badge = document.createElement("span");
+      badge.className = "allergen-badge";
+      badge.textContent = `Contains: ${hits.join(", ")}`;
+      label.appendChild(badge);
     }
   });
 }
-
-document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
-    document.querySelectorAll('section.tab').forEach(tab => tab.classList.remove('active'));
-    document.getElementById(target).classList.add('active');
-    markRecipeAllergens(target);
-  });
-});
 
 window.addEventListener("recipes:refresh-allergens", () => {
   ["recipes-easy", "recipes-medium", "recipes-hard"].forEach(markRecipeAllergens);
 });
 
 function buildRecipeIndex() {
-  const buckets = [
-    { id: "recipes-easy",   diff: "easy" },
+  return [
+    { id: "recipes-easy", diff: "easy" },
     { id: "recipes-medium", diff: "medium" },
-    { id: "recipes-hard",   diff: "hard" }
-  ];
-
-  const index = [];
-  buckets.forEach(({ id, diff }) => {
-    const section = document.getElementById(id);
-    if (!section) return;
-    section.querySelectorAll('details.r-item').forEach(d => {
-      const title = (d.querySelector('.r-btn')?.textContent || '').trim();
-      index.push({
-        id: d.getAttribute('data-id') || `${diff}-${title.toLowerCase().replace(/\s+/g,'-')}`,
-        title,
-        difficulty: diff,
-        ingredientsSet: parseIngredients(d.getAttribute('data-ingredients') || ''),
-      });
-    });
-  });
-  return index;
+    { id: "recipes-hard", diff: "hard" }
+  ].flatMap(({ id, diff }) =>
+    Array.from(document.getElementById(id).querySelectorAll("details.r-item")).map(d => ({
+      id: d.getAttribute("data-id"),
+      title: d.querySelector(".r-btn").textContent.trim(),
+      difficulty: diff,
+      ingredientsSet: parseIngredients(d.getAttribute("data-ingredients") || "")
+    }))
+  );
 }
 
 function tokenizeQuery(q) {
-  return (q || "")
-    .split(",")
-    .map(s => s.trim().toLowerCase())
-    .filter(Boolean);
+  return q.toLowerCase().split(",").map(s => s.trim()).filter(Boolean);
 }
 
-function recipeMatches(tokens, mode, ingredientsSet) {
-  if (!tokens.length) return true;
-  const ingTokens = Array.from(ingredientsSet);
-  const hasMatch = (t) => ingTokens.some(ing => ing.includes(t));
-  return (mode === "all") ? tokens.every(hasMatch) : tokens.some(hasMatch);
+function recipeMatchesAny(tokens, ingredientsSet) {
+  return tokens.length === 0 || tokens.some(t => Array.from(ingredientsSet).some(ing => ing.includes(t)));
 }
 
 function openRecipeById(recipeId) {
-  let sectionId = "recipes-easy";
-  if (recipeId.startsWith("medium-")) sectionId = "recipes-medium";
-  if (recipeId.startsWith("hard-"))   sectionId = "recipes-hard";
+  const diff = recipeId.startsWith("medium-") ? "recipes-medium" :
+               recipeId.startsWith("hard-")   ? "recipes-hard"   : "recipes-easy";
 
-  document.querySelectorAll('section.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(sectionId).classList.add('active');
+  document.querySelectorAll("section.tab").forEach(t => t.classList.remove("active"));
+  document.getElementById(diff).classList.add("active");
 
-  const target = document.querySelector(`#${sectionId} details.r-item[data-id="${recipeId}"]`);
-  if (target) {
-    target.open = true;
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  if (typeof markRecipeAllergens === 'function') {
-    markRecipeAllergens(sectionId);
-  }
+  const target = document.querySelector(`#${diff} details.r-item[data-id="${recipeId}"]`);
+  if (target) target.open = true;
 }
 
 function renderRecipeResults(recipes) {
-  const list = document.getElementById('recipesResultsList');
-  const empty = document.getElementById('recipesResultsEmpty');
-  list.innerHTML = '';
+  const list = document.getElementById("recipesResultsList");
+  const empty = document.getElementById("recipesResultsEmpty");
+  list.innerHTML = "";
 
-  if (!recipes.length) {
-    empty.hidden = false;
-    return;
-  }
-  empty.hidden = true;
+  empty.hidden = recipes.length > 0;
 
   recipes.forEach(r => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    card.setAttribute('data-id', r.id);
-
-    const badge = `<span class="badge ${r.difficulty}">${r.difficulty[0].toUpperCase() + r.difficulty.slice(1)}</span>`;
+    const card = document.createElement("div");
+    card.className = "result-card";
     card.innerHTML = `
       <div class="result-title">
-        <span>${r.title}</span>
-        ${badge}
+        ${r.title}
+        <span class="badge ${r.difficulty}">${r.difficulty}</span>
       </div>
-      <div class="result-meta">Contains: ${Array.from(r.ingredientsSet).join(', ')}</div>
+      <div class="result-meta">Contains: ${Array.from(r.ingredientsSet).join(", ")}</div>
     `;
-
-    card.addEventListener('click', () => openRecipeById(r.id));
+    card.addEventListener("click", () => openRecipeById(r.id));
     list.appendChild(card);
   });
 }
 
 function wireMainRecipeFilter() {
-  const grid     = document.getElementById('recipesGrid');
-  const results  = document.getElementById('recipesResults');
-  const queryEl  = document.getElementById('recipesQuery');
-  const clearBtn = document.getElementById('recipesClear');
-  const modeEls  = document.querySelectorAll('input[name="recipes-mode"]');
-
-  if (!grid || !results || !queryEl) return;
+  const grid = document.getElementById("recipesGrid");
+  const results = document.getElementById("recipesResults");
+  const queryEl = document.getElementById("recipesQuery");
+  const clearBtn = document.getElementById("recipesClear");
 
   let INDEX = buildRecipeIndex();
 
   const run = () => {
     const tokens = tokenizeQuery(queryEl.value);
-    const mode = Array.from(modeEls).find(r => r.checked)?.value || 'any';
+    const matches = INDEX.filter(r => recipeMatchesAny(tokens, r.ingredientsSet));
+
     if (!tokens.length) {
       results.hidden = true;
-      grid.style.display = '';
+      grid.style.display = "";
       return;
     }
-    const matches = INDEX.filter(r => recipeMatches(tokens, mode, r.ingredientsSet));
+
     renderRecipeResults(matches);
     results.hidden = false;
-    grid.style.display = 'none';
+    grid.style.display = "none";
   };
 
-  queryEl.addEventListener('input', run);
-  modeEls.forEach(r => r.addEventListener('change', run));
-  clearBtn.addEventListener('click', () => {
-    queryEl.value = '';
-    const any = document.querySelector('input[name="recipes-mode"][value="any"]');
-    if (any) any.checked = true;
-    run();
-  });
-
-  window.addEventListener('recipes:reindex', () => { INDEX = buildRecipeIndex(); run(); });
+  queryEl.addEventListener("input", run);
+  clearBtn.addEventListener("click", () => { queryEl.value = ""; run(); });
 
   run();
 }
 
-document.addEventListener('DOMContentLoaded', wireMainRecipeFilter);
+document.addEventListener("DOMContentLoaded", wireMainRecipeFilter);
