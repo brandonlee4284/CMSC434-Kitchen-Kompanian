@@ -265,6 +265,9 @@ table {
   justify-content: center;
   z-index: 2000;
 }
+.modal-label {
+  width: 320px;
+}
 
 .modal-content {
   background: white;
@@ -400,7 +403,7 @@ nav button[data-tab="profile"] img {
 }
 
 .p-input {
-  width: 100%;
+  width: 95%;
   padding: 10px 12px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
