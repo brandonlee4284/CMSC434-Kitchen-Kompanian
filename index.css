@@ -695,3 +695,25 @@ nav button[data-tab="profile"] img {
 
 .r-item.allergen .r-btn{ background:#b91c1c; color:#fff; }
 .r-item.allergen[open] .r-btn{ background:#991b1b; }
+
+
+.p-modal-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.p-avatar-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+#pChangeAvatar {
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto;
+}

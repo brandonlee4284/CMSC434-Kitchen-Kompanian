@@ -7,6 +7,23 @@ buttons.forEach(btn => btn.addEventListener("click", () => {
     document.getElementById(btn.dataset.tab).classList.add("active");
 }));
 
+let ALL_RECIPE_NAMES = [];
+
+function collectRecipeNames() {
+  const selectors = [
+    "#recipes-easy details.r-item > summary.r-btn",
+    "#recipes-medium details.r-item > summary.r-btn",
+    "#recipes-hard details.r-item > summary.r-btn"
+  ];
+
+  const nodes = document.querySelectorAll(selectors.join(", "));
+  ALL_RECIPE_NAMES = Array.from(nodes)
+    .map(el => el.textContent.trim())
+    .filter(Boolean);
+}
+
+document.addEventListener("DOMContentLoaded", collectRecipeNames);
+
 const today = new Date();
 
 function formatDate(date) {
@@ -418,6 +435,18 @@ renderTables();*/
           <button class="p-icon-btn" id="pCloseModal" aria-label="Close">✕</button>
         </div>
         <div class="p-modal-body">
+          <div class="p-modal-avatar">
+            <img
+              id="pAvatarPreview"
+              class="p-avatar-preview"
+              src="${avatar ? avatar.src : ''}"
+              alt="Profile picture preview"
+            />
+            <button type="button" id="pChangeAvatar" class="p-btn-secondary">
+              Change photo
+            </button>
+          </div>
+
           <div class="p-modal-field">
             <label class="p-modal-label" for="pEmailInput">Email</label>
             <input style="width: 86.3%" id="pEmailInput" type="email" class="p-input" placeholder="name@example.com" />
@@ -446,30 +475,121 @@ renderTables();*/
       </div>
     `;
     document.body.appendChild(modal);
+    const avatarPreview = document.getElementById("pAvatarPreview");
+    const changeAvatarBtn = document.getElementById("pChangeAvatar");
 
-    const makeRow = (value = "") => {
+    if (avatarPreview) {
+      avatarPreview.src = avatar.src || avatarPreview.src;
+    }
+
+    const triggerAvatarPicker = () => {
+      if (typeof window.openAvatarFilePicker === "function") {
+        window.openAvatarFilePicker();
+      } else {
+        avatar.click();
+      }
+    };
+
+    if (changeAvatarBtn) {
+      changeAvatarBtn.addEventListener("click", triggerAvatarPicker);
+    }
+    if (avatarPreview) {
+      avatarPreview.addEventListener("click", triggerAvatarPicker);
+      avatarPreview.style.cursor = "pointer";
+    }
+
+    // Keep modal preview in sync when the avatar image changes
+    window.addEventListener("avatar:updated", (e) => {
+      if (!avatarPreview) return;
+      const src = (e && e.detail && e.detail.src) || avatar.src;
+      if (src) avatarPreview.src = src;
+    });
+
+    const makeRow = (value = "", options = null) => {
       const row = document.createElement("div");
       row.className = "p-row";
-      row.innerHTML = `
-        <input type="text" class="p-input" value="${value.replace(/"/g, "&quot;")}" />
-        <button type="button" class="p-del-btn" aria-label="Delete">🗑</button>
-      `;
-      row.querySelector(".p-del-btn").addEventListener("click", () => row.remove());
+
+      let fieldEl;
+
+      if (Array.isArray(options) && options.length) {
+        const select = document.createElement("select");
+        select.className = "p-input";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Select a recipe...";
+        select.appendChild(placeholder);
+
+        options.forEach((optValue) => {
+          const opt = document.createElement("option");
+          opt.value = optValue;
+          opt.textContent = optValue;
+          select.appendChild(opt);
+        });
+
+        if (value && options.includes(value)) {
+          select.value = value;
+        }
+
+        fieldEl = select;
+        row.appendChild(select);
+      } else {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "p-input";
+        input.value = value.replace(/"/g, "&quot;");
+        fieldEl = input;
+        row.appendChild(input);
+      }
+
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "p-del-btn";
+      delBtn.setAttribute("aria-label", "Delete");
+      delBtn.textContent = "🗑";
+      delBtn.addEventListener("click", () => row.remove());
+
+      row.appendChild(delBtn);
       return row;
     };
+    
 
     const fillModal = () => {
       $("#pEmailInput").value = profileState.email || "";
+
+      // keep avatar preview in sync
+      const avatarPreview = $("#pAvatarPreview");
+      if (avatarPreview) {
+        avatarPreview.src = avatar.src || avatarPreview.src;
+      }
+
       const map = [
-        ["favoriteRecipes", "#p-favoriteRecipes-list"],        
+        ["favoriteRecipes", "#p-favoriteRecipes-list"],
         ["allergies", "#p-allergies-list"]
       ];
+
       map.forEach(([key, sel]) => {
         const list = $(sel);
         list.innerHTML = "";
+
         const values = Array.isArray(profileState[key]) ? profileState[key] : [];
-        if (!values.length) list.appendChild(makeRow(""));
-        else values.forEach((v) => list.appendChild(makeRow(v)));
+
+        if (key === "favoriteRecipes") {
+          const options =
+            ALL_RECIPE_NAMES && ALL_RECIPE_NAMES.length
+              ? ALL_RECIPE_NAMES
+              : values;
+
+          if (!values.length) {
+            list.appendChild(makeRow("", options));
+          } else {
+            values.forEach((v) => list.appendChild(makeRow(v, options)));
+          }
+        } else {
+          // allergies still use text inputs
+          if (!values.length) list.appendChild(makeRow(""));
+          else values.forEach((v) => list.appendChild(makeRow(v)));
+        }
       });
     };
 
@@ -486,8 +606,21 @@ renderTables();*/
       btn.addEventListener("click", () => {
         const key = btn.getAttribute("data-p-add");
         const list = $(`#p-${key}-list`);
-        list.appendChild(makeRow(""));
-        list.lastElementChild.querySelector("input").focus();
+
+        if (key === "favoriteRecipes") {
+          const options =
+            ALL_RECIPE_NAMES && ALL_RECIPE_NAMES.length
+              ? ALL_RECIPE_NAMES
+              : Array.isArray(profileState.favoriteRecipes)
+                  ? profileState.favoriteRecipes
+                  : [];
+          list.appendChild(makeRow("", options));
+        } else {
+          list.appendChild(makeRow(""));
+        }
+
+        const field = list.lastElementChild.querySelector(".p-input");
+        if (field) field.focus();
       });
     });
 
@@ -499,8 +632,20 @@ renderTables();*/
           .map((i) => i.value.trim())
           .filter(Boolean);
 
-      profileState.favoriteRecipes = collect("#p-favoriteRecipes-list");
+      const newFavoriteRecipes = collect("#p-favoriteRecipes-list");
+
+      const seen = new Set();
+      for (const recipe of newFavoriteRecipes) {
+        if (seen.has(recipe)) {
+          alert("You can't select two of the same recipes. Please remove duplicates.");
+          return;
+        }
+        seen.add(recipe);
+      }
+
+      profileState.favoriteRecipes = newFavoriteRecipes;
       profileState.allergies = collect("#p-allergies-list");
+
       renderProfile();
       window.dispatchEvent(new Event("recipes:refresh-allergens"));
       closeModal();
@@ -530,6 +675,8 @@ renderTables();*/
     fileInput.style.display = "none";
     document.body.appendChild(fileInput);
 
+    window.openAvatarFilePicker = () => fileInput.click();
+
     avatar.addEventListener("click", () => fileInput.click());
 
     fileInput.addEventListener("change", () => {
@@ -551,6 +698,10 @@ renderTables();*/
       const reader = new FileReader();
       reader.onload = () => {
         avatar.src = reader.result;
+
+        window.dispatchEvent(
+          new CustomEvent("avatar:updated", { detail: { src: avatar.src } })
+        );
       };
       reader.onerror = () => {
         alert("Sorry, we couldn't read that file.");
@@ -559,6 +710,7 @@ renderTables();*/
     });
   });
 })();
+
 
 //shopping tab
 const input = document.getElementById('newItem');
@@ -724,3 +876,5 @@ document.querySelectorAll('.recipes-grid input[type="button"]').forEach(btn => {
 window.addEventListener("recipes:refresh-allergens", () => {
   ["recipes-easy", "recipes-medium", "recipes-hard"].forEach(markRecipeAllergens);
 });
+
+
