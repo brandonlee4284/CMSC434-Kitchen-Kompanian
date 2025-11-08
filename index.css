@@ -775,8 +775,8 @@ nav button[data-tab="profile"] img {
   border:1px solid #fecaca;
   border-radius:10px;
 }
-.r-item.allergen .r-btn{ background:#b91c1c; color:#fff; }
-.r-item.allergen[open] .r-btn{ background:#991b1b; }
+.r-item.allergen .r-btn{ background:#f87171; color:#fff; }
+.r-item.allergen[open] .r-btn{ background:#fd4d4d; }
 
 .p-modal-avatar{
   display:flex;
